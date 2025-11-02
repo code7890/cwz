@@ -12,10 +12,6 @@ const Header: React.FC = () => {
     { name: 'Courses', href: '/courses', icon: GraduationCap },
     { name: 'Challenges', href: '/challenges', icon: Trophy },
     { name: 'AI Tools', href: '/ai-tools', icon: Sparkles },
-    { name: 'Community', href: '/community', icon: Users },
-    { name: 'Mentorship', href: '/mentorship', icon: UserCheck },
-    { name: 'Docs', href: '/docs', icon: FileText },
-    { name: 'Pricing', href: '/pricing', icon: DollarSign },
   ];
 
   useEffect(() => {
