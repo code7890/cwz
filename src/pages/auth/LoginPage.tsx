@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Code, Github, Chrome, AlertCircle } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { signIn } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -11,6 +14,7 @@ const LoginPage: React.FC = () => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const [apiError, setApiError] = useState('');
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -34,11 +38,16 @@ const LoginPage: React.FC = () => {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    setApiError('');
+
+    const { error } = await signIn(formData.email, formData.password);
+
+    if (error) {
+      setApiError(error.message || 'Invalid email or password');
       setIsLoading(false);
-      // Handle successful login
-    }, 2000);
+    } else {
+      navigate('/dashboard');
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,6 +138,17 @@ const LoginPage: React.FC = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* API Error */}
+            {apiError && (
+              <div className="p-4 bg-red-50 border border-red-200 rounded-xl flex items-start">
+                <AlertCircle className="w-5 h-5 text-red-600 mr-3 flex-shrink-0 mt-0.5" />
+                <div className="flex-1">
+                  <p className="text-sm text-red-800 font-medium">Authentication Error</p>
+                  <p className="text-sm text-red-700 mt-1">{apiError}</p>
+                </div>
+              </div>
+            )}
+
             {/* Email Field */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-neutral-700 mb-2">

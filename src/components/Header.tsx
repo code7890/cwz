@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Code, BookOpen, Users, Trophy, FileText, DollarSign, GraduationCap, UserCheck, Sparkles } from 'lucide-react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Menu, X, Code, BookOpen, Users, Trophy, FileText, DollarSign, GraduationCap, UserCheck, Sparkles, LogOut, User as UserIcon } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut, loading } = useAuth();
 
   const navigation = [
     { name: 'Roadmaps', href: '/roadmaps', icon: BookOpen },
@@ -24,6 +28,17 @@ const Header: React.FC = () => {
   }, []);
 
   const isActive = (path: string) => location.pathname === path;
+
+  const handleSignOut = async () => {
+    await signOut();
+    setShowUserMenu(false);
+    navigate('/');
+  };
+
+  const getUserInitials = () => {
+    if (!user?.email) return 'U';
+    return user.email.charAt(0).toUpperCase();
+  };
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -70,24 +85,66 @@ const Header: React.FC = () => {
             })}
           </nav>
 
-          {/* Auth Buttons */}
+          {/* Auth Buttons / User Menu */}
           <div className="hidden md:flex items-center space-x-3">
-            <Link
-              to="/login"
-              className={`text-sm font-medium px-3 py-2 rounded-lg transition-all duration-200 ${
-                isScrolled 
-                  ? 'text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50' 
-                  : 'text-neutral-800 hover:text-neutral-900 hover:bg-white/50'
-              }`}
-            >
-              Login
-            </Link>
-            <Link
-              to="/signup"
-              className="bg-primary-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-primary-700 transition-all duration-200 shadow-sm hover:shadow-md"
-            >
-              Get Started
-            </Link>
+            {loading ? (
+              <div className="w-8 h-8 border-2 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
+            ) : user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                    isScrolled
+                      ? 'text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50'
+                      : 'text-neutral-800 hover:text-neutral-900 hover:bg-white/50'
+                  }`}
+                >
+                  <div className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-semibold">
+                    {getUserInitials()}
+                  </div>
+                  <span className="text-sm font-medium">{user.email?.split('@')[0]}</span>
+                </button>
+
+                {showUserMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2">
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setShowUserMenu(false)}
+                      className="flex items-center px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50"
+                    >
+                      <UserIcon className="w-4 h-4 mr-2" />
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50"
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className={`text-sm font-medium px-3 py-2 rounded-lg transition-all duration-200 ${
+                    isScrolled
+                      ? 'text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50'
+                      : 'text-neutral-800 hover:text-neutral-900 hover:bg-white/50'
+                  }`}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/signup"
+                  className="bg-primary-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-primary-700 transition-all duration-200 shadow-sm hover:shadow-md"
+                >
+                  Get Started
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile menu button */}

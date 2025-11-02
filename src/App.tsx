@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
@@ -26,7 +27,8 @@ import AIToolsPage from './pages/AIToolsPage';
 function App() {
   return (
     <Router>
-      <Routes>
+      <AuthProvider>
+        <Routes>
         {/* Public routes with layout */}
         <Route path="/" element={<Layout><HomePage /></Layout>} />
         <Route path="/about" element={<Layout><AboutPage /></Layout>} />
@@ -57,6 +59,7 @@ function App() {
         <Route path="/instructor/course-edit/:courseId" element={<CourseCreationPage />} />
         <Route path="/instructor/lesson-editor/:lessonId" element={<LessonEditorPage />} />
       </Routes>
+      </AuthProvider>
     </Router>
   );
 }

@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Code, CheckCircle, AlertCircle, Github, Chrome } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext';
 
 const SignupPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { signUp } = useAuth();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,6 +16,8 @@ const SignupPage: React.FC = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [apiError, setApiError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -46,11 +51,20 @@ const SignupPage: React.FC = () => {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Simulate API call
-    setTimeout(() => {
+    setApiError('');
+    setSuccessMessage('');
+
+    const { error } = await signUp(formData.email, formData.password, formData.name);
+
+    if (error) {
+      setApiError(error.message || 'Failed to create account');
       setIsLoading(false);
-      // Handle successful signup
-    }, 2000);
+    } else {
+      setSuccessMessage('Account created successfully! Redirecting...');
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
