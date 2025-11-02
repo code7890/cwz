@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Code, BookOpen, Users, Trophy, FileText, DollarSign, GraduationCap, UserCheck } from 'lucide-react';
+import { Menu, X, Code, BookOpen, Users, Trophy, FileText, DollarSign, GraduationCap, UserCheck, Sparkles } from 'lucide-react';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -11,6 +11,7 @@ const Header: React.FC = () => {
     { name: 'Roadmaps', href: '/roadmaps', icon: BookOpen },
     { name: 'Courses', href: '/courses', icon: GraduationCap },
     { name: 'Challenges', href: '/challenges', icon: Trophy },
+    { name: 'AI Tools', href: '/ai-tools', icon: Sparkles },
     { name: 'Community', href: '/community', icon: Users },
     { name: 'Mentorship', href: '/mentorship', icon: UserCheck },
     { name: 'Docs', href: '/docs', icon: FileText },

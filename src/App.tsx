@@ -21,6 +21,7 @@ import MentorshipPage from './pages/mentorship/MentorshipPage';
 import InstructorDashboardPage from './pages/instructor/InstructorDashboardPage';
 import CourseCreationPage from './pages/instructor/CourseCreationPage';
 import LessonEditorPage from './pages/instructor/LessonEditorPage';
+import AIToolsPage from './pages/AIToolsPage';
 
 function App() {
   return (
@@ -38,7 +39,8 @@ function App() {
         <Route path="/docs" element={<Layout><DocsPage /></Layout>} />
         <Route path="/blog" element={<Layout><BlogPage /></Layout>} />
         <Route path="/contact" element={<Layout><ContactPage /></Layout>} />
-        
+        <Route path="/ai-tools" element={<Layout><AIToolsPage /></Layout>} />
+
         {/* Auth routes without layout */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
