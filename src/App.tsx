@@ -51,6 +51,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/progress" element={<ProgressPage />} />
         <Route path="/course/:courseId" element={<CourseDetailPage />} />
+        <Route path="/learn/:courseId" element={<CourseDetailPage />} />
         <Route path="/profile/:userId" element={<UserProfilePage />} />
         
         {/* Instructor routes without main layout */}

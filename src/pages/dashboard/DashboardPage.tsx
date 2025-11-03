@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  BookOpen, 
-  Trophy, 
-  Clock, 
-  Target, 
-  TrendingUp, 
-  Calendar, 
-  Users, 
-  Star, 
-  Play, 
-  CheckCircle, 
-  Award, 
-  Zap, 
-  Brain, 
-  Code, 
-  FileText, 
+import {
+  BookOpen,
+  Trophy,
+  Clock,
+  Target,
+  TrendingUp,
+  Calendar,
+  Users,
+  Star,
+  Play,
+  CheckCircle,
+  Award,
+  Zap,
+  Brain,
+  Code,
+  FileText,
   MessageCircle,
   Bell,
   Settings,
@@ -29,9 +29,24 @@ import {
   Lightbulb,
   ArrowRight
 } from 'lucide-react';
+import DashboardNav from '../../components/DashboardNav';
+import { useAuth } from '../../contexts/AuthContext';
+import { getCourses } from '../../lib/database';
 
 const DashboardPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const { user } = useAuth();
+  const [courses, setCourses] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadCourses = async () => {
+      const data = await getCourses();
+      setCourses(data.slice(0, 3));
+      setLoading(false);
+    };
+    loadCourses();
+  }, []);
 
   // Mock data - in real app, this would come from API
   const studentData = {
@@ -166,21 +181,23 @@ const DashboardPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50">
-      {/* Dashboard Header */}
-      <div className="bg-white border-b border-neutral-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+      {/* Dashboard Navigation */}
+      <DashboardNav />
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Welcome Section */}
+        <div className="bg-gradient-to-r from-primary-600 to-primary-700 rounded-2xl p-8 mb-8 text-white">
+          <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
-              <img
-                src={studentData.avatar}
-                alt={studentData.name}
-                className="w-10 h-10 rounded-full border-2 border-primary-200"
-              />
+              <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-2xl font-bold">
+                {user?.email?.charAt(0).toUpperCase()}
+              </div>
               <div>
-                <h1 className="text-lg font-semibold text-neutral-900">
-                  Welcome back, {studentData.name}!
+                <h1 className="text-2xl font-bold">
+                  Welcome back, {user?.email?.split('@')[0]}!
                 </h1>
-                <p className="text-sm text-neutral-600">{studentData.level}</p>
+                <p className="text-primary-100">{studentData.level}</p>
               </div>
             </div>
             
