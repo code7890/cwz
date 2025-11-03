@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Code, Users, Trophy, BookOpen, Zap, Target, Heart, Star, Play, CheckCircle, TrendingUp, Award, Brain, Rocket, Sparkles, Globe, Lightbulb } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 const HomePage: React.FC = () => {
+  const { user } = useAuth();
   const features = [
     {
       icon: BookOpen,
@@ -150,10 +152,10 @@ const HomePage: React.FC = () => {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-slide-up">
               <Link
-                to="/signup"
+                to={user ? "/dashboard" : "/signup"}
                 className="bg-primary-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-700 transition-all duration-300 flex items-center justify-center group shadow-lg hover:shadow-xl transform hover:-translate-y-1"
               >
-                Start Learning Free
+                {user ? "Go to Dashboard" : "Start Learning Free"}
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link

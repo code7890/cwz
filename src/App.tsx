@@ -17,6 +17,7 @@ import SignupPage from './pages/auth/SignupPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import ProgressPage from './pages/dashboard/ProgressPage';
 import CourseDetailPage from './pages/courses/CourseDetailPage';
+import CourseLearningPage from './pages/courses/CourseLearningPage';
 import UserProfilePage from './pages/profile/UserProfilePage';
 import MentorshipPage from './pages/mentorship/MentorshipPage';
 import InstructorDashboardPage from './pages/instructor/InstructorDashboardPage';
@@ -51,7 +52,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/progress" element={<ProgressPage />} />
         <Route path="/course/:courseId" element={<CourseDetailPage />} />
-        <Route path="/learn/:courseId" element={<CourseDetailPage />} />
+        <Route path="/learn/:courseId" element={<CourseLearningPage />} />
         <Route path="/profile/:userId" element={<UserProfilePage />} />
         
         {/* Instructor routes without main layout */}
