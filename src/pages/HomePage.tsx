@@ -103,7 +103,7 @@ const HomePage: React.FC = () => {
       name: 'Hassan Sheikh',
       role: 'AI Engineer',
       content: 'Best platform for desi students. Real guidance, practical skills, aur sab kuch Hinglish mein. Highly recommended!',
-      avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop',
+      avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=150&h=15&fit=crop',
       company: 'AI Startup',
       bgColor: 'bg-lavender-50',
       borderColor: 'border-lavender-200',
