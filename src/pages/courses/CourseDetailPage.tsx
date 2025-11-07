@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
+import ComingSoonOverlay from '../../components/ComingSoonOverlay';
 
 const CourseDetailPage: React.FC = () => {
   const { courseId } = useParams();
@@ -90,7 +91,8 @@ const CourseDetailPage: React.FC = () => {
   const index = parseInt(course.id.substring(0, 8), 16) % 3;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50 relative">
+      <ComingSoonOverlay />
       {/* Header */}
       <div className="bg-white border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">

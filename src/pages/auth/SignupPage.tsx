@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Code, CheckCircle, AlertCircle, Github, Chrome } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Code, CheckCircle, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const SignupPage: React.FC = () => {
@@ -9,11 +9,9 @@ const SignupPage: React.FC = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: '',
-    confirmPassword: ''
+    password: ''
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [apiError, setApiError] = useState('');
@@ -34,12 +32,8 @@ const SignupPage: React.FC = () => {
 
     if (!formData.password) {
       newErrors.password = 'Password is required';
-    } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
     }
 
     setErrors(newErrors);
@@ -93,30 +87,6 @@ const SignupPage: React.FC = () => {
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-neutral-900 mb-2">Create Your Account</h1>
             <p className="text-neutral-600">Join thousands of students building their tech careers</p>
-          </div>
-
-          {/* Social Login */}
-          <div className="space-y-3 mb-6">
-            <button className="w-full flex items-center justify-center px-4 py-3 border-2 border-neutral-200 rounded-xl font-medium text-neutral-700 hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-200 group">
-              <Github className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-              Continue with GitHub
-            </button>
-            <button className="w-full flex items-center justify-center px-4 py-3 border-2 border-neutral-200 rounded-xl font-medium text-neutral-700 hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-200 group">
-              <Chrome className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-              Continue with Google
-            </button>
-          </div>
-
-          {/* Divider */}
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-neutral-200"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50 text-neutral-500 font-medium">
-                Or continue with email
-              </span>
-            </div>
           </div>
 
           {/* Form */}
@@ -221,42 +191,6 @@ const SignupPage: React.FC = () => {
                 <p className="mt-1 text-sm text-red-600 flex items-center">
                   <AlertCircle className="w-4 h-4 mr-1" />
                   {errors.password}
-                </p>
-              )}
-            </div>
-
-            {/* Confirm Password Field */}
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-neutral-700 mb-2">
-                Confirm Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-400" />
-                <input
-                  type={showConfirmPassword ? 'text' : 'password'}
-                  id="confirmPassword"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  className={`w-full pl-10 pr-12 py-3 border-2 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 ${
-                    errors.confirmPassword 
-                      ? 'border-red-300 bg-red-50' 
-                      : 'border-neutral-200 bg-white hover:border-neutral-300'
-                  }`}
-                  placeholder="Confirm your password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-600 transition-colors"
-                >
-                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                </button>
-              </div>
-              {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-600 flex items-center">
-                  <AlertCircle className="w-4 h-4 mr-1" />
-                  {errors.confirmPassword}
                 </p>
               )}
             </div>

@@ -30,6 +30,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import DashboardNav from '../../components/DashboardNav';
+import ComingSoonOverlay from '../../components/ComingSoonOverlay';
 import { useAuth } from '../../contexts/AuthContext';
 import { getCourses } from '../../lib/database';
 
@@ -180,9 +181,10 @@ const DashboardPage: React.FC = () => {
   const maxHours = Math.max(...weeklyStats.map(stat => stat.hours));
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50">
+    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50 relative">
       {/* Dashboard Navigation */}
       <DashboardNav />
+      <ComingSoonOverlay />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

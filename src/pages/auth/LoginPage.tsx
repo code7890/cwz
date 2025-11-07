@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Code, Github, Chrome, AlertCircle } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, ArrowRight, Code, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const LoginPage: React.FC = () => {
@@ -110,30 +110,6 @@ const LoginPage: React.FC = () => {
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-neutral-900 mb-2">Welcome Back</h1>
             <p className="text-neutral-600">Sign in to continue your learning journey</p>
-          </div>
-
-          {/* Social Login */}
-          <div className="space-y-3 mb-6">
-            <button className="w-full flex items-center justify-center px-4 py-3 border-2 border-neutral-200 rounded-xl font-medium text-neutral-700 hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-200 group">
-              <Github className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-              Continue with GitHub
-            </button>
-            <button className="w-full flex items-center justify-center px-4 py-3 border-2 border-neutral-200 rounded-xl font-medium text-neutral-700 hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-200 group">
-              <Chrome className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform" />
-              Continue with Google
-            </button>
-          </div>
-
-          {/* Divider */}
-          <div className="relative mb-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-neutral-200"></div>
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50 text-neutral-500 font-medium">
-                Or sign in with email
-              </span>
-            </div>
           </div>
 
           {/* Form */}

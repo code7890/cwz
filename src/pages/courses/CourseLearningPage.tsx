@@ -15,6 +15,7 @@ import {
   MessageCircle
 } from 'lucide-react';
 import DashboardNav from '../../components/DashboardNav';
+import ComingSoonOverlay from '../../components/ComingSoonOverlay';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -94,8 +95,9 @@ const CourseLearningPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-neutral-900">
+    <div className="min-h-screen bg-neutral-900 relative">
       <DashboardNav />
+      <ComingSoonOverlay />
 
       <div className="flex h-[calc(100vh-4rem)]">
         {/* Sidebar - Course Content */}
