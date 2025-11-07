@@ -359,7 +359,7 @@ const HomePage: React.FC = () => {
               <div className="space-y-4 text-neutral-600">
                 <p className="text-lg">
                   Hum believe karte hain ke learning sirf theory nahi honi chahiye. 
-                  <strong className="text-neutral-800"> Action {'>'} Theory</strong> - yahi hamara mantra hai.
+                  <strong className="text-neutral-800"> Action {'>'} Theory</strong> - yahi hamara vision hai.
                 </p>
                 <div className="space-y-4">
                   <div className="flex items-start space-x-3 p-4 bg-cream-50 rounded-xl border border-cream-200">
