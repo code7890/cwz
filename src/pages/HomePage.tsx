@@ -100,7 +100,7 @@ const HomePage: React.FC = () => {
       borderColor: 'border-sage-200',
     },
     {
-      name: 'Hassan Sheikh',
+      name: 'Anjali Kumari',
       role: 'AI Engineer',
       content: 'Best platform for desi students. Real guidance, practical skills, aur sab kuch Hinglish mein. Highly recommended!',
       avatar: 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=150&h=15&fit=crop',
