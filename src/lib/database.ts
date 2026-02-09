@@ -1,17 +1,18 @@
-import { supabase } from './supabase';
+import { supabase } from "./supabase";
 
 export async function getCourses() {
   const { data, error } = await supabase
-    .from('courses')
-    .select(`
+    .from("courses")
+    .select(
+      `
       *,
-      instructor:instructors(id, name, avatar_url),
       category:categories(id, name, slug)
-    `)
-    .order('created_at', { ascending: false });
+    `,
+    )
+    .order("created_at", { ascending: false });
 
   if (error) {
-    console.error('Error fetching courses:', error);
+    console.error("Error fetching courses:", error);
     return [];
   }
 
@@ -20,15 +21,17 @@ export async function getCourses() {
 
 export async function getRoadmaps() {
   const { data, error } = await supabase
-    .from('roadmaps')
-    .select(`
+    .from("roadmaps")
+    .select(
+      `
       *,
       category:categories(id, name, slug)
-    `)
-    .order('created_at', { ascending: false });
+    `,
+    )
+    .order("created_at", { ascending: false });
 
   if (error) {
-    console.error('Error fetching roadmaps:', error);
+    console.error("Error fetching roadmaps:", error);
     return [];
   }
 
@@ -37,13 +40,13 @@ export async function getRoadmaps() {
 
 export async function getRoadmapSteps(roadmapId: string) {
   const { data, error } = await supabase
-    .from('roadmap_steps')
-    .select('*')
-    .eq('roadmap_id', roadmapId)
-    .order('step_number', { ascending: true });
+    .from("roadmap_steps")
+    .select("*")
+    .eq("roadmap_id", roadmapId)
+    .order("step_number", { ascending: true });
 
   if (error) {
-    console.error('Error fetching roadmap steps:', error);
+    console.error("Error fetching roadmap steps:", error);
     return [];
   }
 
@@ -52,15 +55,17 @@ export async function getRoadmapSteps(roadmapId: string) {
 
 export async function getChallenges() {
   const { data, error } = await supabase
-    .from('challenges')
-    .select(`
+    .from("challenges")
+    .select(
+      `
       *,
       category:categories(id, name, slug)
-    `)
-    .order('created_at', { ascending: false });
+    `,
+    )
+    .order("created_at", { ascending: false });
 
   if (error) {
-    console.error('Error fetching challenges:', error);
+    console.error("Error fetching challenges:", error);
     return [];
   }
 
@@ -69,12 +74,12 @@ export async function getChallenges() {
 
 export async function getAITools() {
   const { data, error } = await supabase
-    .from('ai_tools')
-    .select('*')
-    .order('popularity_score', { ascending: false });
+    .from("ai_tools")
+    .select("*")
+    .order("popularity_score", { ascending: false });
 
   if (error) {
-    console.error('Error fetching AI tools:', error);
+    console.error("Error fetching AI tools:", error);
     return [];
   }
 
@@ -83,12 +88,12 @@ export async function getAITools() {
 
 export async function getCategories() {
   const { data, error } = await supabase
-    .from('categories')
-    .select('*')
-    .order('name', { ascending: true });
+    .from("categories")
+    .select("*")
+    .order("name", { ascending: true });
 
   if (error) {
-    console.error('Error fetching categories:', error);
+    console.error("Error fetching categories:", error);
     return [];
   }
 

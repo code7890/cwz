@@ -1,21 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Menu, X, Code, BookOpen, Users, Trophy, FileText, DollarSign, GraduationCap, UserCheck, Sparkles, LogOut, User as UserIcon } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Menu,
+  X,
+  Code,
+  BookOpen,
+  Users,
+  Trophy,
+  FileText,
+  DollarSign,
+  GraduationCap,
+  UserCheck,
+  Sparkles,
+  LogOut,
+  User as UserIcon,
+  Settings,
+} from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+import { supabase } from "../lib/supabase";
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, signOut, loading } = useAuth();
 
   const navigation = [
-    { name: 'Roadmaps', href: '/roadmaps', icon: BookOpen },
-    { name: 'Courses', href: '/courses', icon: GraduationCap },
-    { name: 'Challenges', href: '/challenges', icon: Trophy },
-    { name: 'AI Tools', href: '/ai-tools', icon: Sparkles },
+    { name: "Roadmaps", href: "/roadmaps", icon: BookOpen },
+    { name: "Courses", href: "/courses", icon: GraduationCap },
+    { name: "AI Tools", href: "/ai-tools", icon: Code },
+    { name: "Services", href: "/services", icon: Sparkles },
+    { name: "Hire Me", href: "/hire", icon: UserCheck },
   ];
 
   useEffect(() => {
@@ -23,44 +41,67 @@ const Header: React.FC = () => {
       setIsScrolled(window.scrollY > 50);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    checkAdminStatus();
+  }, [user]);
+
+  const checkAdminStatus = async () => {
+    if (!user) {
+      setIsAdmin(false);
+      return;
+    }
+
+    const { data } = await supabase
+      .from("profiles")
+      .select("is_admin")
+      .eq("id", user.id)
+      .single();
+
+    setIsAdmin(data?.is_admin || false);
+  };
 
   const isActive = (path: string) => location.pathname === path;
 
   const handleSignOut = async () => {
     await signOut();
     setShowUserMenu(false);
-    navigate('/');
+    navigate("/");
   };
 
   const getUserInitials = () => {
-    if (!user?.email) return 'U';
+    if (!user?.email) return "U";
     return user.email.charAt(0).toUpperCase();
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled 
-        ? 'bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm' 
-        : 'bg-transparent'
-    }`}>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm"
+          : "bg-transparent"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
-            <div className={`w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center group-hover:scale-105 transition-all duration-300 ${
-              isScrolled ? 'shadow-md' : ''
-            }`}>
+            <div
+              className={`w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center group-hover:scale-105 transition-all duration-300 ${
+                isScrolled ? "shadow-md" : ""
+              }`}
+            >
               <Code className="w-5 h-5 text-white" />
             </div>
-            <span className={`text-xl font-bold transition-all duration-300 ${
-              isScrolled 
-                ? 'text-neutral-900 text-base' 
-                : 'text-neutral-900'
-            }`}>
-              {isScrolled ? 'CWZ' : 'CodeWithZee'}
+            <span
+              className={`text-xl font-bold transition-all duration-300 ${
+                isScrolled ? "text-neutral-900 text-base" : "text-neutral-900"
+              }`}
+            >
+              {isScrolled ? "CWZ" : "CodeWithZee"}
             </span>
           </Link>
 
@@ -74,8 +115,8 @@ const Header: React.FC = () => {
                   to={item.href}
                   className={`flex items-center space-x-1 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     isActive(item.href)
-                      ? 'bg-primary-50 text-primary-700 shadow-sm'
-                      : `${isScrolled ? 'text-neutral-700' : 'text-neutral-800'} hover:text-neutral-900 hover:bg-neutral-50`
+                      ? "bg-primary-50 text-primary-700 shadow-sm"
+                      : `${isScrolled ? "text-neutral-700" : "text-neutral-800"} hover:text-neutral-900 hover:bg-neutral-50`
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -95,18 +136,30 @@ const Header: React.FC = () => {
                   onClick={() => setShowUserMenu(!showUserMenu)}
                   className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
                     isScrolled
-                      ? 'text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50'
-                      : 'text-neutral-800 hover:text-neutral-900 hover:bg-white/50'
+                      ? "text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50"
+                      : "text-neutral-800 hover:text-neutral-900 hover:bg-white/50"
                   }`}
                 >
                   <div className="w-8 h-8 bg-primary-600 text-white rounded-full flex items-center justify-center font-semibold">
                     {getUserInitials()}
                   </div>
-                  <span className="text-sm font-medium">{user.email?.split('@')[0]}</span>
+                  <span className="text-sm font-medium">
+                    {user.email?.split("@")[0]}
+                  </span>
                 </button>
 
                 {showUserMenu && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-neutral-200 py-2">
+                    {isAdmin && (
+                      <Link
+                        to="/admin"
+                        onClick={() => setShowUserMenu(false)}
+                        className="flex items-center px-4 py-2 text-sm text-primary-700 hover:bg-primary-50 font-medium"
+                      >
+                        <Settings className="w-4 h-4 mr-2" />
+                        Admin Panel
+                      </Link>
+                    )}
                     <Link
                       to="/dashboard"
                       onClick={() => setShowUserMenu(false)}
@@ -131,8 +184,8 @@ const Header: React.FC = () => {
                   to="/login"
                   className={`text-sm font-medium px-3 py-2 rounded-lg transition-all duration-200 ${
                     isScrolled
-                      ? 'text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50'
-                      : 'text-neutral-800 hover:text-neutral-900 hover:bg-white/50'
+                      ? "text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50"
+                      : "text-neutral-800 hover:text-neutral-900 hover:bg-white/50"
                   }`}
                 >
                   Login
@@ -151,12 +204,16 @@ const Header: React.FC = () => {
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className={`md:hidden p-2 rounded-lg transition-colors ${
-              isScrolled 
-                ? 'text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50' 
-                : 'text-neutral-800 hover:text-neutral-900 hover:bg-white/50'
+              isScrolled
+                ? "text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50"
+                : "text-neutral-800 hover:text-neutral-900 hover:bg-white/50"
             }`}
           >
-            {isMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {isMenuOpen ? (
+              <X className="w-5 h-5" />
+            ) : (
+              <Menu className="w-5 h-5" />
+            )}
           </button>
         </div>
 
@@ -173,8 +230,8 @@ const Header: React.FC = () => {
                     onClick={() => setIsMenuOpen(false)}
                     className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                       isActive(item.href)
-                        ? 'bg-primary-50 text-primary-700'
-                        : 'text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50'
+                        ? "bg-primary-50 text-primary-700"
+                        : "text-neutral-700 hover:text-neutral-900 hover:bg-neutral-50"
                     }`}
                   >
                     <Icon className="w-4 h-4" />
