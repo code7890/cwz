@@ -52,10 +52,14 @@ const RoadmapsPage: React.FC = () => {
       const { data, error } = await supabase
         .from("roadmaps")
         .select("*")
-        .eq("is_published", true)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
+
+      console.log("Fetched roadmaps:", data);
       setRoadmaps(data || []);
     } catch (error) {
       console.error("Error fetching roadmaps:", error);
@@ -80,6 +84,23 @@ const RoadmapsPage: React.FC = () => {
     { id: "intermediate", name: "Intermediate" },
     { id: "advanced", name: "Advanced" },
   ];
+
+  // Get category slug from category_id by fetching categories
+  const getCategorySlug = (categoryId: string) => {
+    // This will be populated from the database
+    return categoryId;
+  };
+
+  const filteredRoadmaps = roadmaps.filter((roadmap) => {
+    // Temporarily disable category filtering until categories are properly set up
+    const matchesCategory = selectedCategory === "all" || true;
+    const matchesLevel =
+      selectedLevel === "all" || roadmap.level === selectedLevel;
+    const matchesSearch =
+      roadmap.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      roadmap.description.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesLevel && matchesSearch;
+  });
 
   const getIconForCategory = (category: string) => {
     const iconMap: any = {
@@ -135,37 +156,27 @@ const RoadmapsPage: React.FC = () => {
     );
   };
 
-  const filteredRoadmaps = roadmaps.filter((roadmap) => {
-    const matchesCategory =
-      selectedCategory === "all" || roadmap.category === selectedCategory;
-    const matchesLevel =
-      selectedLevel === "all" || roadmap.level === selectedLevel;
-    const matchesSearch =
-      roadmap.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      roadmap.description.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesLevel && matchesSearch;
-  });
-
   const RoadmapCard = ({ roadmap }: { roadmap: any }) => {
-    const colors = getColorForCategory(roadmap.category || "development");
-    const Icon = getIconForCategory(roadmap.category || "development");
+    // Use icon field from database or default to development
+    const categorySlug = roadmap.icon?.toLowerCase() || "development";
+    const colors = getColorForCategory(categorySlug);
+    const Icon = getIconForCategory(categorySlug);
     const progressPercentage = 0; // Will be calculated from user progress later
-    (roadmap.completedSteps / roadmap.totalSteps) * 100;
 
     return (
       <div
-        className={`${roadmap.bgColor} ${roadmap.borderColor} border-2 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1`}
+        className={`${colors.bgColor} ${colors.borderColor} border-2 rounded-2xl p-6 hover:shadow-xl transition-all duration-300 group hover:-translate-y-1`}
       >
         {/* Header */}
         <div className="flex items-start justify-between mb-4">
           <div
             className={`w-12 h-12 bg-white rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform shadow-sm`}
           >
-            <Icon className={`w-6 h-6 ${roadmap.accentColor}`} />
+            <Icon className={`w-6 h-6 ${colors.accentColor}`} />
           </div>
           <div className="flex items-center space-x-2">
             <span
-              className={`text-xs font-medium ${roadmap.accentColor} bg-white px-2 py-1 rounded-full border ${roadmap.borderColor}`}
+              className={`text-xs font-medium ${colors.accentColor} bg-white px-2 py-1 rounded-full border ${colors.borderColor}`}
             >
               {roadmap.level}
             </span>
@@ -197,7 +208,7 @@ const RoadmapsPage: React.FC = () => {
             </div>
             <div className="w-full bg-white rounded-full h-2">
               <div
-                className={`bg-gradient-to-r ${roadmap.accentColor.replace("text-", "from-").replace("-600", "-400")} ${roadmap.accentColor.replace("text-", "to-").replace("-600", "-600")} h-2 rounded-full transition-all duration-300`}
+                className={`bg-gradient-to-r ${colors.accentColor.replace("text-", "from-").replace("-600", "-400")} ${colors.accentColor.replace("text-", "to-").replace("-600", "-600")} h-2 rounded-full transition-all duration-300`}
                 style={{ width: `${progressPercentage}%` }}
               ></div>
             </div>
@@ -208,11 +219,13 @@ const RoadmapsPage: React.FC = () => {
         <div className="flex items-center justify-between text-sm text-neutral-600 mb-4">
           <div className="flex items-center">
             <Clock className="w-4 h-4 mr-1" />
-            {roadmap.duration}
+            {roadmap.duration_months
+              ? `${roadmap.duration_months} months`
+              : "Self-paced"}
           </div>
           <div className="flex items-center">
             <Users className="w-4 h-4 mr-1" />
-            {roadmap.students.toLocaleString()}
+            {(roadmap.students_enrolled || 0).toLocaleString()}
           </div>
           <div className="flex items-center">
             <Star className="w-4 h-4 mr-1 text-yellow-400 fill-current" />
@@ -221,28 +234,32 @@ const RoadmapsPage: React.FC = () => {
         </div>
 
         {/* Skills Preview */}
-        <div className="mb-4">
-          <div className="flex flex-wrap gap-1">
-            {roadmap.skills.slice(0, 3).map((skill, index) => (
-              <span
-                key={index}
-                className="text-xs bg-white text-neutral-600 px-2 py-1 rounded-full border border-neutral-200"
-              >
-                {skill}
-              </span>
-            ))}
-            {roadmap.skills.length > 3 && (
-              <span className="text-xs text-neutral-500 px-2 py-1">
-                +{roadmap.skills.length - 3} more
-              </span>
-            )}
+        {roadmap.skills && roadmap.skills.length > 0 && (
+          <div className="mb-4">
+            <div className="flex flex-wrap gap-1">
+              {roadmap.skills
+                .slice(0, 3)
+                .map((skill: string, index: number) => (
+                  <span
+                    key={index}
+                    className="text-xs bg-white text-neutral-600 px-2 py-1 rounded-full border border-neutral-200"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              {roadmap.skills.length > 3 && (
+                <span className="text-xs text-neutral-500 px-2 py-1">
+                  +{roadmap.skills.length - 3} more
+                </span>
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* CTA */}
         <Link
           to={`/roadmap/${roadmap.id}`}
-          className={`w-full ${roadmap.accentColor} bg-white border-2 ${roadmap.borderColor} px-4 py-3 rounded-xl font-semibold hover:bg-neutral-50 transition-all duration-300 flex items-center justify-center group-hover:shadow-md`}
+          className={`w-full ${colors.accentColor} bg-white border-2 ${colors.borderColor} px-4 py-3 rounded-xl font-semibold hover:bg-neutral-50 transition-all duration-300 flex items-center justify-center group-hover:shadow-md`}
         >
           {roadmap.completedSteps > 0 ? "Continue Learning" : "Start Roadmap"}
           <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />

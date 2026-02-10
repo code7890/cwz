@@ -53,10 +53,14 @@ const AIToolsPage: React.FC = () => {
       const { data, error } = await supabase
         .from("ai_tools")
         .select("*")
-        .eq("is_published", true)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Supabase error:", error);
+        throw error;
+      }
+
+      console.log("Fetched AI tools:", data);
       setAiTools(data || []);
     } catch (error) {
       console.error("Error fetching AI tools:", error);
@@ -65,14 +69,20 @@ const AIToolsPage: React.FC = () => {
     }
   };
 
+  // Calculate real counts for categories
+  const getCategoryCount = (categoryId: string) => {
+    if (categoryId === "all") return aiTools.length;
+    return aiTools.filter((tool) => tool.category === categoryId).length;
+  };
+
   const categories = [
-    { id: "all", name: "All Tools", icon: Sparkles, count: 42 },
-    { id: "writing", name: "Writing & Content", icon: FileText, count: 12 },
-    { id: "design", name: "Design & Art", icon: Palette, count: 8 },
-    { id: "coding", name: "Development", icon: Code, count: 10 },
-    { id: "video", name: "Video & Audio", icon: Video, count: 6 },
-    { id: "productivity", name: "Productivity", icon: Target, count: 4 },
-    { id: "data", name: "Data & Analytics", icon: Database, count: 2 },
+    { id: "all", name: "All Tools", icon: Sparkles },
+    { id: "writing", name: "Writing & Content", icon: FileText },
+    { id: "design", name: "Design & Art", icon: Palette },
+    { id: "coding", name: "Development", icon: Code },
+    { id: "video", name: "Video & Audio", icon: Video },
+    { id: "productivity", name: "Productivity", icon: Target },
+    { id: "data", name: "Data & Analytics", icon: Database },
   ];
 
   const pricingTypes = [
@@ -510,7 +520,7 @@ const AIToolsPage: React.FC = () => {
                         : "bg-neutral-100 text-neutral-600"
                     }`}
                   >
-                    {category.count}
+                    {getCategoryCount(category.id)}
                   </span>
                 </button>
               );
