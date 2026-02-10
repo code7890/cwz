@@ -407,7 +407,7 @@ const ServicesPage: React.FC = () => {
 
           <div className="grid md:grid-cols-3 gap-8">
             <a
-              href="https://medium.com/@codewithzee"
+              href="https://medium.com/@zaheerexplores"
               target="_blank"
               rel="noopener noreferrer"
               className="p-6 border-2 border-neutral-200 rounded-xl hover:border-primary-600 hover:shadow-lg transition-all group"
@@ -433,7 +433,7 @@ const ServicesPage: React.FC = () => {
             </a>
 
             <a
-              href="https://codewithzee.com/tools"
+              href="https://codewithzee.com/ai-tools"
               className="p-6 border-2 border-neutral-200 rounded-xl hover:border-primary-600 hover:shadow-lg transition-all group"
             >
               <ExternalLink className="w-6 h-6 text-neutral-400 group-hover:text-primary-600 mb-4" />
