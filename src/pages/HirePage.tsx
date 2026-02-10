@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Mail,
@@ -15,6 +15,10 @@ import {
 } from "lucide-react";
 
 const HirePage: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,7 +40,7 @@ ${formData.project}
 Timeline: ${formData.timeline}
 Budget Range: ${formData.budget}
     `);
-    window.location.href = `mailto:contact@codewithzee.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:devzeeofficial@gmail.com?subject=${subject}&body=${body}`;
   };
 
   const process = [
@@ -88,6 +92,11 @@ Budget Range: ${formData.budget}
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-white overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url(/services-cover.png)" }}
+        ></div>
+        <div className="absolute inset-0 bg-black/60"></div>
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:32px_32px]"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="max-w-3xl">
@@ -167,10 +176,10 @@ Budget Range: ${formData.budget}
 
           <div className="grid md:grid-cols-2 gap-8">
             {/* What I DO */}
-            <div className="bg-white border-2 border-green-200 rounded-xl p-8">
+            <div className="bg-white border-2 border-primary-200 rounded-xl p-8">
               <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                  <CheckCircle className="w-7 h-7 text-green-600" />
+                <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
+                  <CheckCircle className="w-7 h-7 text-primary-600" />
                 </div>
                 <h3 className="text-2xl font-bold text-neutral-900">
                   What I DO
@@ -179,7 +188,7 @@ Budget Range: ${formData.budget}
               <ul className="space-y-3">
                 {doList.map((item, index) => (
                   <li key={index} className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
                     <span className="text-neutral-700">{item}</span>
                   </li>
                 ))}
@@ -238,7 +247,7 @@ Budget Range: ${formData.budget}
 
           <div className="grid md:grid-cols-2 gap-8 mb-12">
             <a
-              href="mailto:contact@codewithzee.com"
+              href="mailto:devzeeofficial@gmail.com"
               className="flex items-center space-x-4 p-6 bg-neutral-50 border-2 border-neutral-200 rounded-xl hover:border-primary-600 hover:shadow-lg transition-all group"
             >
               <div className="w-14 h-14 bg-primary-100 rounded-xl flex items-center justify-center group-hover:bg-primary-600 transition-colors">
@@ -248,12 +257,12 @@ Budget Range: ${formData.budget}
                 <h3 className="text-lg font-bold text-neutral-900 mb-1">
                   Email
                 </h3>
-                <p className="text-neutral-600">contact@codewithzee.com</p>
+                <p className="text-neutral-600">devzeeofficial@gmail.com</p>
               </div>
             </a>
 
             <a
-              href="https://linkedin.com/in/codewithzee"
+              href="https://www.linkedin.com/in/zaheerexplores/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center space-x-4 p-6 bg-neutral-50 border-2 border-neutral-200 rounded-xl hover:border-primary-600 hover:shadow-lg transition-all group"
@@ -265,7 +274,9 @@ Budget Range: ${formData.budget}
                 <h3 className="text-lg font-bold text-neutral-900 mb-1">
                   LinkedIn
                 </h3>
-                <p className="text-neutral-600">linkedin.com/in/codewithzee</p>
+                <p className="text-neutral-600">
+                  linkedin.com/in/zaheerexplores
+                </p>
               </div>
             </a>
           </div>
@@ -371,17 +382,22 @@ Budget Range: ${formData.budget}
       </section>
 
       {/* Services CTA */}
-      <section className="py-20 bg-gradient-to-br from-neutral-900 to-neutral-800 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="relative py-20 bg-gradient-to-br from-cream-500 via-cream-400 to-primary-500 text-white overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{ backgroundImage: "url(/services-cover.png)" }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-600/80 to-cream-600/80"></div>
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold mb-4">
             Want to see what I can build for you?
           </h2>
-          <p className="text-xl text-neutral-300 mb-8">
+          <p className="text-xl text-white/90 mb-8">
             Check out my services: MVPs, Automation, and Vetted Talent
           </p>
           <Link
             to="/services"
-            className="inline-flex items-center space-x-2 px-8 py-4 bg-white text-neutral-900 rounded-lg hover:bg-neutral-100 transition-colors font-semibold text-lg"
+            className="inline-flex items-center space-x-2 px-8 py-4 bg-white text-primary-600 rounded-lg hover:bg-neutral-50 transition-colors font-semibold text-lg shadow-lg"
           >
             <span>View Services</span>
             <ArrowRight className="w-5 h-5" />

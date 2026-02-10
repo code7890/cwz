@@ -33,6 +33,10 @@ const CoursesPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       const [coursesData, categoriesData] = await Promise.all([

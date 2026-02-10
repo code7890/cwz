@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Check, Zap, Star, Infinity as InfinityIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
@@ -6,6 +6,10 @@ import { useAuth } from "../contexts/AuthContext";
 const PricingPage: React.FC = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleSubscribe = (plan: "monthly" | "yearly") => {
     if (!user) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Zap,
@@ -16,6 +16,9 @@ import {
 } from "lucide-react";
 
 const ServicesPage: React.FC = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const services = [
     {
       icon: Zap,
@@ -36,9 +39,9 @@ const ServicesPage: React.FC = () => {
       ],
       timeline: "5–7 days",
       bestFor: "Early-stage founders, solo builders, idea validation",
-      color: "from-blue-500 to-blue-600",
-      bgColor: "bg-blue-50",
-      borderColor: "border-blue-200",
+      color: "from-primary-500 to-primary-600",
+      bgColor: "bg-primary-50",
+      borderColor: "border-primary-200",
     },
     {
       icon: Cog,
@@ -62,9 +65,9 @@ const ServicesPage: React.FC = () => {
       tools: "Zapier, Make, Google Sheets, Notion, Gmail, OpenAI",
       timeline: "3–5 days",
       bestFor: "Marketing agencies, web agencies, service businesses",
-      color: "from-purple-500 to-purple-600",
-      bgColor: "bg-purple-50",
-      borderColor: "border-purple-200",
+      color: "from-sage-500 to-sage-600",
+      bgColor: "bg-sage-50",
+      borderColor: "border-sage-200",
     },
     {
       icon: Users,
@@ -86,9 +89,9 @@ const ServicesPage: React.FC = () => {
       ],
       why: ["No resumes spam", "No endless screening", "No junior surprises"],
       engagement: "Contract / project-based / monthly",
-      color: "from-green-500 to-green-600",
-      bgColor: "bg-green-50",
-      borderColor: "border-green-200",
+      color: "from-cream-500 to-cream-600",
+      bgColor: "bg-cream-50",
+      borderColor: "border-cream-200",
     },
   ];
 
@@ -96,6 +99,11 @@ const ServicesPage: React.FC = () => {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-white overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: "url(/services-cover.png)" }}
+        ></div>
+        <div className="absolute inset-0 bg-black/60"></div>
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:32px_32px]"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
           <div className="max-w-3xl">
@@ -105,7 +113,7 @@ const ServicesPage: React.FC = () => {
             </div>
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
               I build fast, practical systems that{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-600">
                 make money
               </span>
             </h1>
@@ -183,7 +191,7 @@ const ServicesPage: React.FC = () => {
                                 key={i}
                                 className="flex items-start space-x-3"
                               >
-                                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                                <CheckCircle className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
                                 <span className="text-neutral-700">{item}</span>
                               </li>
                             ))}
@@ -202,7 +210,7 @@ const ServicesPage: React.FC = () => {
                                 key={i}
                                 className="flex items-start space-x-3"
                               >
-                                <Target className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                                <Target className="w-5 h-5 text-sage-600 flex-shrink-0 mt-0.5" />
                                 <span className="text-neutral-700">{item}</span>
                               </li>
                             ))}
@@ -221,7 +229,7 @@ const ServicesPage: React.FC = () => {
                                 key={i}
                                 className="flex items-start space-x-3"
                               >
-                                <span className="flex-shrink-0 w-6 h-6 bg-green-100 text-green-700 rounded-full flex items-center justify-center text-sm font-bold">
+                                <span className="flex-shrink-0 w-6 h-6 bg-cream-100 text-cream-700 rounded-full flex items-center justify-center text-sm font-bold">
                                   {i + 1}
                                 </span>
                                 <span className="text-neutral-700">{item}</span>
@@ -264,7 +272,7 @@ const ServicesPage: React.FC = () => {
                                 key={i}
                                 className="flex items-start space-x-3"
                               >
-                                <CheckCircle className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                                <CheckCircle className="w-5 h-5 text-sage-600 flex-shrink-0 mt-0.5" />
                                 <span className="text-neutral-700">{item}</span>
                               </li>
                             ))}
@@ -291,7 +299,7 @@ const ServicesPage: React.FC = () => {
                                 key={i}
                                 className="flex items-start space-x-3"
                               >
-                                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                                <CheckCircle className="w-5 h-5 text-cream-600 flex-shrink-0 mt-0.5" />
                                 <span className="text-neutral-700">{item}</span>
                               </li>
                             ))}
@@ -310,7 +318,7 @@ const ServicesPage: React.FC = () => {
                                 key={i}
                                 className="flex items-start space-x-3"
                               >
-                                <Sparkles className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+                                <Sparkles className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
                                 <span className="text-neutral-700">{item}</span>
                               </li>
                             ))}
@@ -361,17 +369,22 @@ const ServicesPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-neutral-900 to-neutral-800 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="relative py-20 bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 text-white overflow-hidden">
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-20"
+          style={{ backgroundImage: "url(/services-cover.png)" }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-600/90 to-primary-800/90"></div>
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold mb-6">
             Ready to ship something real?
           </h2>
-          <p className="text-xl text-neutral-300 mb-8">
+          <p className="text-xl text-primary-50 mb-8">
             Let's talk about execution—fast, clean, and working.
           </p>
           <Link
             to="/hire"
-            className="inline-flex items-center space-x-2 px-8 py-4 bg-white text-neutral-900 rounded-lg hover:bg-neutral-100 transition-colors font-semibold text-lg"
+            className="inline-flex items-center space-x-2 px-8 py-4 bg-white text-primary-600 rounded-lg hover:bg-neutral-50 transition-colors font-semibold text-lg shadow-lg"
           >
             <span>Hire Me</span>
             <ArrowRight className="w-5 h-5" />
@@ -444,14 +457,14 @@ const ServicesPage: React.FC = () => {
           </p>
           <div className="flex items-center justify-center space-x-4">
             <a
-              href="mailto:contact@codewithzee.com"
+              href="mailto:devzeeofficial@gmail.com"
               className="inline-flex items-center space-x-2 px-6 py-3 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors font-medium"
             >
               <Mail className="w-5 h-5" />
               <span>Email Me</span>
             </a>
             <a
-              href="https://linkedin.com/in/codewithzee"
+              href="https://www.linkedin.com/in/zaheerexplores/"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center space-x-2 px-6 py-3 border-2 border-neutral-900 text-neutral-900 rounded-lg hover:bg-neutral-900 hover:text-white transition-colors font-medium"
