@@ -1,34 +1,23 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Link } from "react-router-dom";
 import {
   Search,
-  Filter,
   Star,
   Users,
   ExternalLink,
   TrendingUp,
-  Zap,
   Code,
   Palette,
-  Brain,
-  MessageSquare,
   Video,
-  Music,
   FileText,
-  Image,
   Database,
   Sparkles,
-  CheckCircle,
   Grid3X3,
   List,
   SlidersHorizontal,
-  Verified,
-  DollarSign,
-  Award,
-  BookOpen,
   Target,
-  Lightbulb,
+  CheckCircle,
 } from "lucide-react";
+import { supabase } from "../lib/supabase";
 
 const AIToolsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -37,10 +26,44 @@ const AIToolsPage: React.FC = () => {
   const [sortBy, setSortBy] = useState("popular");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
+  const [aiTools, setAiTools] = useState<
+    Array<{
+      id: number;
+      name: string;
+      description: string;
+      category: string;
+      pricing_type: string;
+      rating?: number;
+      tags?: string[];
+      [key: string]: any;
+    }>
+  >([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    fetchAITools();
+  }, []);
+
+  const fetchAITools = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("ai_tools")
+        .select("*")
+        .eq("is_published", true)
+        .order("created_at", { ascending: false });
+
+      if (error) throw error;
+      setAiTools(data || []);
+    } catch (error) {
+      console.error("Error fetching AI tools:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const categories = [
     { id: "all", name: "All Tools", icon: Sparkles, count: 42 },
@@ -67,227 +90,6 @@ const AIToolsPage: React.FC = () => {
     { id: "name", name: "Name (A-Z)" },
   ];
 
-  const aiTools = [
-    {
-      id: 1,
-      name: "ChatGPT",
-      slug: "chatgpt",
-      shortDescription:
-        "AI-powered conversational assistant for writing, coding, and problem-solving",
-      description:
-        "ChatGPT is a powerful AI language model that helps with writing, coding, brainstorming, and learning. Perfect for students, developers, and content creators.",
-      logo_url:
-        "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
-      website_url: "https://chat.openai.com",
-      category: "writing",
-      subcategory: "Conversational AI",
-      pricing_type: "freemium",
-      pricing_details: "Free tier available, Plus at $20/month",
-      features: [
-        "Natural conversations",
-        "Code generation",
-        "Content writing",
-        "Learning assistance",
-      ],
-      use_cases: [
-        "Writing essays",
-        "Debugging code",
-        "Learning concepts",
-        "Brainstorming ideas",
-      ],
-      tags: ["AI", "Chatbot", "Writing", "Coding", "GPT-4"],
-      rating: 4.8,
-      total_reviews: 15420,
-      popularity_score: 98,
-      is_featured: true,
-      is_verified: true,
-      bgColor: "bg-gradient-to-br from-green-50 to-green-100",
-      accentColor: "text-green-600",
-      borderColor: "border-green-200",
-    },
-    {
-      id: 2,
-      name: "Midjourney",
-      slug: "midjourney",
-      shortDescription:
-        "AI art generator creating stunning images from text descriptions",
-      description:
-        "Midjourney is an AI-powered art generator that creates beautiful, unique images from text prompts. Perfect for designers and creative professionals.",
-      logo_url:
-        "https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
-      website_url: "https://midjourney.com",
-      category: "design",
-      subcategory: "Image Generation",
-      pricing_type: "subscription",
-      pricing_details: "Starting at $10/month",
-      features: [
-        "Text-to-image generation",
-        "High-resolution outputs",
-        "Style variations",
-        "Commercial usage",
-      ],
-      use_cases: [
-        "Creating artwork",
-        "Design inspiration",
-        "Marketing visuals",
-        "Concept art",
-      ],
-      tags: ["AI Art", "Image Generation", "Design", "Creative"],
-      rating: 4.7,
-      total_reviews: 8930,
-      popularity_score: 95,
-      is_featured: true,
-      is_verified: true,
-      bgColor: "bg-gradient-to-br from-pink-50 to-pink-100",
-      accentColor: "text-pink-600",
-      borderColor: "border-pink-200",
-    },
-    {
-      id: 3,
-      name: "GitHub Copilot",
-      slug: "github-copilot",
-      shortDescription: "AI pair programmer that helps you write code faster",
-      description:
-        "GitHub Copilot is an AI-powered code completion tool that suggests entire lines or blocks of code as you type. Essential for developers.",
-      logo_url:
-        "https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
-      website_url: "https://github.com/features/copilot",
-      category: "coding",
-      subcategory: "Code Assistant",
-      pricing_type: "subscription",
-      pricing_details: "$10/month or $100/year",
-      features: [
-        "Code suggestions",
-        "Multi-language support",
-        "Context-aware",
-        "IDE integration",
-      ],
-      use_cases: [
-        "Writing code faster",
-        "Learning new languages",
-        "Boilerplate generation",
-        "Bug fixing",
-      ],
-      tags: ["AI", "Coding", "Development", "GitHub", "Productivity"],
-      rating: 4.6,
-      total_reviews: 12340,
-      popularity_score: 92,
-      is_featured: true,
-      is_verified: true,
-      bgColor: "bg-gradient-to-br from-blue-50 to-blue-100",
-      accentColor: "text-blue-600",
-      borderColor: "border-blue-200",
-    },
-    {
-      id: 4,
-      name: "Jasper AI",
-      slug: "jasper-ai",
-      shortDescription: "AI content platform for marketing copy and blog posts",
-      description:
-        "Jasper AI helps marketers and content creators generate high-quality written content quickly. Perfect for blogs, ads, and social media.",
-      logo_url:
-        "https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
-      website_url: "https://jasper.ai",
-      category: "writing",
-      subcategory: "Content Writing",
-      pricing_type: "subscription",
-      pricing_details: "Starting at $49/month",
-      features: [
-        "Blog post generation",
-        "Marketing copy",
-        "SEO optimization",
-        "Multiple languages",
-      ],
-      use_cases: [
-        "Blog writing",
-        "Ad copy",
-        "Social media posts",
-        "Email campaigns",
-      ],
-      tags: ["AI", "Writing", "Marketing", "Content", "SEO"],
-      rating: 4.5,
-      total_reviews: 6780,
-      popularity_score: 88,
-      is_featured: false,
-      is_verified: true,
-      bgColor: "bg-gradient-to-br from-purple-50 to-purple-100",
-      accentColor: "text-purple-600",
-      borderColor: "border-purple-200",
-    },
-    {
-      id: 5,
-      name: "RunwayML",
-      slug: "runwayml",
-      shortDescription: "AI-powered video editing and generation platform",
-      description:
-        "RunwayML provides AI tools for video editing, including background removal, motion tracking, and video generation from text.",
-      logo_url:
-        "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
-      website_url: "https://runwayml.com",
-      category: "video",
-      subcategory: "Video Editing",
-      pricing_type: "freemium",
-      pricing_details: "Free tier available, Pro at $15/month",
-      features: [
-        "Video generation",
-        "Background removal",
-        "Motion tracking",
-        "AI effects",
-      ],
-      use_cases: [
-        "Video editing",
-        "Content creation",
-        "Special effects",
-        "Marketing videos",
-      ],
-      tags: ["AI", "Video", "Editing", "Generation", "Creative"],
-      rating: 4.6,
-      total_reviews: 4230,
-      popularity_score: 85,
-      is_featured: false,
-      is_verified: true,
-      bgColor: "bg-gradient-to-br from-orange-50 to-orange-100",
-      accentColor: "text-orange-600",
-      borderColor: "border-orange-200",
-    },
-    {
-      id: 6,
-      name: "Notion AI",
-      slug: "notion-ai",
-      shortDescription: "AI writing assistant integrated into Notion workspace",
-      description:
-        "Notion AI helps you write, brainstorm, edit, and summarize directly within your Notion workspace. Perfect for productivity.",
-      logo_url:
-        "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&fit=crop",
-      website_url: "https://notion.so/product/ai",
-      category: "productivity",
-      subcategory: "Writing Assistant",
-      pricing_type: "subscription",
-      pricing_details: "$10/month add-on to Notion",
-      features: [
-        "Writing assistance",
-        "Summarization",
-        "Translation",
-        "Brainstorming",
-      ],
-      use_cases: [
-        "Note-taking",
-        "Document writing",
-        "Meeting notes",
-        "Task management",
-      ],
-      tags: ["AI", "Productivity", "Writing", "Notion", "Workspace"],
-      rating: 4.7,
-      total_reviews: 8450,
-      popularity_score: 90,
-      is_featured: true,
-      is_verified: true,
-      bgColor: "bg-gradient-to-br from-neutral-50 to-neutral-100",
-      accentColor: "text-neutral-600",
-      borderColor: "border-neutral-200",
-    },
-  ];
-
   const filteredTools = useMemo(() => {
     let filtered = aiTools;
 
@@ -296,9 +98,10 @@ const AIToolsPage: React.FC = () => {
         (tool) =>
           tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          tool.tags.some((tag) =>
-            tag.toLowerCase().includes(searchQuery.toLowerCase()),
-          ),
+          (tool.tags &&
+            tool.tags.some((tag: string) =>
+              tag.toLowerCase().includes(searchQuery.toLowerCase()),
+            )),
       );
     }
 
@@ -320,7 +123,7 @@ const AIToolsPage: React.FC = () => {
         filtered.sort((a, b) => a.id - b.id);
         break;
       case "rating":
-        filtered.sort((a, b) => b.rating - a.rating);
+        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
         break;
       case "name":
         filtered.sort((a, b) => a.name.localeCompare(b.name));
@@ -330,7 +133,7 @@ const AIToolsPage: React.FC = () => {
     }
 
     return filtered;
-  }, [searchQuery, selectedCategory, selectedPricing, sortBy]);
+  }, [searchQuery, selectedCategory, selectedPricing, sortBy, aiTools]);
 
   const getPricingBadge = (type: string) => {
     switch (type) {
@@ -383,7 +186,7 @@ const AIToolsPage: React.FC = () => {
               />
               {tool.is_verified && (
                 <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-1">
-                  <Verified className="w-3 h-3 text-white" />
+                  <CheckCircle className="w-3 h-3 text-white" />
                 </div>
               )}
             </div>
@@ -424,7 +227,7 @@ const AIToolsPage: React.FC = () => {
               </div>
 
               <div className="flex flex-wrap gap-1 mb-4">
-                {tool.tags.slice(0, 5).map((tag, index) => (
+                {tool.tags.slice(0, 5).map((tag: string, index: number) => (
                   <span
                     key={index}
                     className="text-xs bg-neutral-50 text-neutral-600 px-2 py-1 rounded-full border border-neutral-200"
@@ -463,7 +266,7 @@ const AIToolsPage: React.FC = () => {
               />
               {tool.is_verified && (
                 <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-1">
-                  <Verified className="w-3 h-3 text-white" />
+                  <CheckCircle className="w-3 h-3 text-white" />
                 </div>
               )}
             </div>
@@ -501,7 +304,7 @@ const AIToolsPage: React.FC = () => {
           </div>
 
           <div className="flex flex-wrap gap-1 mb-4">
-            {tool.tags.slice(0, 3).map((tag, index) => (
+            {tool.tags.slice(0, 3).map((tag: string, index: number) => (
               <span
                 key={index}
                 className="text-xs bg-white text-neutral-600 px-2 py-1 rounded-full border border-neutral-200"
@@ -529,6 +332,17 @@ const AIToolsPage: React.FC = () => {
       </div>
     );
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50 pt-8 pb-16 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-neutral-600">Loading AI tools...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50 pt-8 pb-16">
