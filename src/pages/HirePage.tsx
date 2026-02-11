@@ -27,20 +27,44 @@ const HirePage: React.FC = () => {
     budget: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Project Inquiry from ${formData.name}`);
-    const body = encodeURIComponent(`
-Name: ${formData.name}
-Email: ${formData.email}
+    setIsSubmitting(true);
+    setSubmitStatus("idle");
 
-What I'm building:
-${formData.project}
+    try {
+      const form = e.target as HTMLFormElement;
+      const formDataToSend = new FormData(form);
 
-Timeline: ${formData.timeline}
-Budget Range: ${formData.budget}
-    `);
-    window.location.href = `mailto:devzeeofficial@gmail.com?subject=${subject}&body=${body}`;
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams(formDataToSend as any).toString(),
+      });
+
+      if (response.ok) {
+        setSubmitStatus("success");
+        setFormData({
+          name: "",
+          email: "",
+          project: "",
+          timeline: "",
+          budget: "",
+        });
+      } else {
+        setSubmitStatus("error");
+      }
+    } catch (error) {
+      console.error("Error sending form:", error);
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const process = [
@@ -286,7 +310,15 @@ Budget Range: ${formData.budget}
             <h3 className="text-2xl font-bold text-neutral-900 mb-6">
               Quick Contact Form
             </h3>
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form
+              name="hire-contact"
+              method="POST"
+              data-netlify="true"
+              data-netlify-honeypot="bot-field"
+              onSubmit={handleSubmit}
+              className="space-y-6"
+            >
+              <input type="hidden" name="form-name" value="hire-contact" />
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-sm font-semibold text-neutral-900 mb-2">
@@ -294,6 +326,7 @@ Budget Range: ${formData.budget}
                   </label>
                   <input
                     type="text"
+                    name="name"
                     required
                     value={formData.name}
                     onChange={(e) =>
@@ -309,6 +342,7 @@ Budget Range: ${formData.budget}
                   </label>
                   <input
                     type="email"
+                    name="email"
                     required
                     value={formData.email}
                     onChange={(e) =>
@@ -325,6 +359,7 @@ Budget Range: ${formData.budget}
                   What you're building
                 </label>
                 <textarea
+                  name="project"
                   required
                   value={formData.project}
                   onChange={(e) =>
@@ -343,6 +378,7 @@ Budget Range: ${formData.budget}
                   </label>
                   <input
                     type="text"
+                    name="timeline"
                     required
                     value={formData.timeline}
                     onChange={(e) =>
@@ -358,6 +394,7 @@ Budget Range: ${formData.budget}
                   </label>
                   <input
                     type="text"
+                    name="budget"
                     required
                     value={formData.budget}
                     onChange={(e) =>
@@ -369,12 +406,44 @@ Budget Range: ${formData.budget}
                 </div>
               </div>
 
+              {/* Success Message */}
+              {submitStatus === "success" && (
+                <div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-start space-x-3">
+                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-green-800 font-medium">
+                      Message sent successfully!
+                    </p>
+                    <p className="text-green-700 text-sm">
+                      I'll get back to you within 24 hours.
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Error Message */}
+              {submitStatus === "error" && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start space-x-3">
+                  <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-red-800 font-medium">
+                      Failed to send message
+                    </p>
+                    <p className="text-red-700 text-sm">
+                      Please try again or email me directly at
+                      devzeeofficial@gmail.com
+                    </p>
+                  </div>
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full flex items-center justify-center space-x-2 px-8 py-4 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors font-semibold text-lg"
+                disabled={isSubmitting}
+                className="w-full flex items-center justify-center space-x-2 px-8 py-4 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <span>Send Message</span>
-                <ArrowRight className="w-5 h-5" />
+                <span>{isSubmitting ? "Sending..." : "Send Message"}</span>
+                {!isSubmitting && <ArrowRight className="w-5 h-5" />}
               </button>
             </form>
           </div>

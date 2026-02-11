@@ -12,6 +12,10 @@
   to = "/index.html"
   status = 200
 
+# Form notifications
+[[plugins]]
+  package = "@netlify/plugin-forms"
+
 # Optional: Set custom headers for security and performance
 [[headers]]
   for = "/*"
