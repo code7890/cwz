@@ -1,43 +1,43 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Code, Twitter, Github, Linkedin, Mail } from 'lucide-react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Code, Twitter, Github, Linkedin, Mail } from "lucide-react";
 
 const Footer: React.FC = () => {
   const footerSections = [
     {
-      title: 'Learn',
+      title: "Learn",
       links: [
-        { name: 'Roadmaps', href: '/roadmaps' },
-        { name: 'Courses', href: '/courses' },
-        { name: 'Challenges', href: '/challenges' },
-        { name: 'Documentation', href: '/docs' },
+        { name: "Roadmaps", href: "/roadmaps" },
+        { name: "Courses", href: "/courses" },
+        { name: "Challenges", href: "/challenges" },
+        { name: "Documentation", href: "/docs" },
       ],
     },
     {
-      title: 'Community',
+      title: "Community",
       links: [
-        { name: 'Discord', href: '#' },
-        { name: 'Student Wall', href: '/community' },
-        { name: 'Blog', href: '/blog' },
-        { name: 'Success Stories', href: '#' },
+        { name: "Discord", href: "#" },
+        { name: "Student Wall", href: "/community" },
+        { name: "Blog", href: "/blog" },
+        { name: "Success Stories", href: "#" },
       ],
     },
     {
-      title: 'Support',
+      title: "Support",
       links: [
-        { name: 'Help Center', href: '#' },
-        { name: 'Contact Us', href: '/contact' },
-        { name: 'Pricing', href: '/pricing' },
-        { name: 'FAQ', href: '#' },
+        { name: "Help Center", href: "#" },
+        { name: "Contact Us", href: "/contact" },
+        { name: "Pricing", href: "/pricing" },
+        { name: "FAQ", href: "#" },
       ],
     },
     {
-      title: 'Company',
+      title: "Company",
       links: [
-        { name: 'About Us', href: '/about' },
-        { name: 'Careers', href: '#' },
-        { name: 'Privacy Policy', href: '#' },
-        { name: 'Terms of Service', href: '#' },
+        { name: "About Us", href: "/about" },
+        { name: "Careers", href: "#" },
+        { name: "Privacy Policy", href: "#" },
+        { name: "Terms of Service", href: "#" },
       ],
     },
   ];
@@ -55,20 +55,32 @@ const Footer: React.FC = () => {
               <span className="text-xl font-bold text-white">CodeWithZee</span>
             </Link>
             <p className="text-neutral-400 mb-6 max-w-sm leading-relaxed">
-              A desi-first platform to learn tech, build mindset, and find direction. 
-              Practical guidance for real youth.
+              A desi-first platform to learn tech, build mindset, and find
+              direction. Practical guidance for real youth.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800">
+              <a
+                href="#"
+                className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800"
+              >
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800">
+              <a
+                href="#"
+                className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800"
+              >
                 <Github className="w-5 h-5" />
               </a>
-              <a href="#" className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800">
+              <a
+                href="#"
+                className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800"
+              >
                 <Linkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800">
+              <a
+                href="#"
+                className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800"
+              >
                 <Mail className="w-5 h-5" />
               </a>
             </div>
@@ -96,7 +108,7 @@ const Footer: React.FC = () => {
 
         <div className="border-t border-neutral-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-neutral-400 text-sm">
-            © 2025 CodeWithZee. All rights reserved.
+            © 2026 CodeWithZee. All rights reserved.
           </p>
           <p className="text-neutral-400 text-sm mt-2 md:mt-0">
             Made with ❤️ for the desi tech community
