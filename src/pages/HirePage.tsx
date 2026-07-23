@@ -4,14 +4,16 @@ import {
   Mail,
   Linkedin,
   CheckCircle,
-  XCircle,
   ArrowRight,
   Clock,
   DollarSign,
   Target,
   Zap,
-  AlertTriangle,
   MessageSquare,
+  UserCheck,
+  ShieldCheck,
+  Globe,
+  Calendar,
 } from "lucide-react";
 
 const HirePage: React.FC = () => {
@@ -22,9 +24,10 @@ const HirePage: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    serviceCategory: "Global Business Setup & Payment Gateways",
     project: "",
-    timeline: "",
-    budget: "",
+    timeline: "ASAP",
+    budget: "$1,000 - $3,000",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,27 +41,37 @@ const HirePage: React.FC = () => {
     setSubmitStatus("idle");
 
     try {
-      const form = e.target as HTMLFormElement;
-      const formDataToSend = new FormData(form);
-
-      const response = await fetch("/", {
+      await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formDataToSend as any).toString(),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "e883e479-715b-432d-9eb5-8e36ae22bc30",
+          to_email: "devzeeofficial@gmail.com",
+          subject: `⚡ New Consultation Hire Request from ${formData.name}`,
+          from_name: "CodeWithZee Platform",
+          replyto: formData.email,
+          name: formData.name,
+          email: formData.email,
+          serviceCategory: formData.serviceCategory,
+          timeline: formData.timeline,
+          budget: formData.budget,
+          project: formData.project,
+          message: `New Consultation Hire Request:\n\nName: ${formData.name}\nEmail: ${formData.email}\nService: ${formData.serviceCategory}\nTimeline: ${formData.timeline}\nBudget: ${formData.budget}\nProject Details: ${formData.project}`,
+        }),
       });
 
-      if (response.ok) {
-        setSubmitStatus("success");
-        setFormData({
-          name: "",
-          email: "",
-          project: "",
-          timeline: "",
-          budget: "",
-        });
-      } else {
-        setSubmitStatus("error");
-      }
+      setSubmitStatus("success");
+      setFormData({
+        name: "",
+        email: "",
+        serviceCategory: "Global Business Setup & Payment Gateways",
+        project: "",
+        timeline: "ASAP",
+        budget: "$1,000 - $3,000",
+      });
     } catch (error) {
       console.error("Error sending form:", error);
       setSubmitStatus("error");
@@ -70,79 +83,67 @@ const HirePage: React.FC = () => {
   const process = [
     {
       number: "1",
-      title: "You describe the problem",
-      description: "Not features. Not tech. Just the real problem.",
+      title: "Share Your Requirements",
+      description: "Briefly outline your business setup, MVP, or AI workflow needs.",
       icon: MessageSquare,
     },
     {
       number: "2",
-      title: "I suggest a simple solution",
-      description: "Clear scope. Clear timeline. No jargon.",
+      title: "1-on-1 Consultation",
+      description: "We align on scope, deliverables, and architecture timeline.",
       icon: Target,
     },
     {
       number: "3",
-      title: "We agree on price & timeline",
-      description: "Small, fixed scope • Clear deliverables • 50% upfront",
+      title: "Clear Milestone Terms",
+      description: "Fixed transparent pricing upfront with defined deliverables.",
       icon: DollarSign,
     },
     {
       number: "4",
-      title: "I build & deliver",
-      description: "Fast. Clean. Working.",
+      title: "Execution & Handover",
+      description: "Fast, clean, high-performance systems delivered on schedule.",
       icon: Zap,
     },
   ];
 
-  const doList = [
-    "Build MVPs in 5-7 days",
-    "Automate agency workflows",
-    "Connect you with vetted talent",
-    "Ship working systems fast",
-    "Clear scope & timeline",
-    "Fixed pricing upfront",
-  ];
-
-  const dontList = [
-    "Long unpaid discussions",
-    '"Let\'s explore ideas" calls',
-    "Free consulting disguised as meetings",
-    "Endless revisions",
-    "Over-engineering",
-    "Vague requirements",
+  const highlights = [
+    "Direct 1-on-1 access with single point of contact",
+    "US LLC & UK LTD Corporate Formation Guidance",
+    "Verified Stripe & PayPal Business Gateway Integration",
+    "Wise Business, Mercury Bank & Payoneer Onboarding",
+    "Production-grade 7-Day MVP Software Builds",
+    "AI Agents & Automated CRM Pipelines",
+    "Top 1% Vetted Talent Matching",
+    "Clear milestone terms & fixed upfront pricing",
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen text-neutral-900">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900 text-white overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url(/services-cover.png)" }}
-        ></div>
-        <div className="absolute inset-0 bg-black/60"></div>
-        <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:32px_32px]"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <section className="relative bg-gradient-to-br from-neutral-900 via-neutral-950 to-neutral-900 text-white pt-28 pb-20 overflow-hidden border-b border-neutral-800">
+        <div className="absolute inset-0 bg-[radial-gradient(#ee720a_1px,transparent_1px)] [background-size:32px_32px] opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full mb-6">
-              <Zap className="w-4 h-4 text-yellow-400" />
-              <span className="text-sm font-medium">Fast Execution</span>
+            <div className="inline-flex items-center space-x-2 px-4 py-2 bg-primary-500/10 border border-primary-500/30 rounded-full text-xs font-bold text-primary-400 mb-6">
+              <UserCheck className="w-4 h-4" />
+              <span>DIRECT CONSULTATION & INQUIRY</span>
             </div>
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Hire Me
+            <h1 className="text-4xl sm:text-6xl font-extrabold mb-6 leading-tight tracking-tight">
+              Book a Consultation &{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-peach-400">
+                Work With Me
+              </span>
             </h1>
-            <p className="text-2xl text-neutral-300 mb-8 leading-relaxed">
-              If you're here, you probably need execution—fast.
-            </p>
-            <p className="text-lg text-neutral-400 mb-8">
-              Before we talk, here's how I work.
+            <p className="text-lg sm:text-xl text-neutral-300 mb-8 leading-relaxed">
+              If you need technical execution—fast, clean, and revenue-aligned—let's schedule a direct consultation. From legal formation and Stripe setup to 7-day MVPs and AI automation.
             </p>
             <a
-              href="#contact"
-              className="inline-flex items-center space-x-2 px-8 py-4 bg-white text-neutral-900 rounded-lg hover:bg-neutral-100 transition-colors font-semibold text-lg"
+              href="#consultation-form"
+              className="inline-flex items-center space-x-2 px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold text-base transition-colors shadow-lg"
             >
-              <span>Get Started</span>
-              <ArrowRight className="w-5 h-5" />
+              <Calendar className="w-5 h-5" />
+              <span>Schedule Consultation</span>
             </a>
           </div>
         </div>
@@ -151,338 +152,233 @@ const HirePage: React.FC = () => {
       {/* Process Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-neutral-900 mb-4">
-              How the process works
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 mb-4">
+              How We Work Together
             </h2>
-            <p className="text-xl text-neutral-600">
-              Simple, transparent, and focused on results
+            <p className="text-base text-neutral-600">
+              Clear steps, direct communication, and outcome-aligned execution.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {process.map((step, index) => (
-              <div key={index} className="relative">
-                <div className="bg-white border-2 border-neutral-200 rounded-xl p-6 hover:border-primary-600 hover:shadow-lg transition-all">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">
-                      {step.number}
+            {process.map((step, index) => {
+              const Icon = step.icon;
+              return (
+                <div key={index} className="bg-neutral-50 border-2 border-neutral-200 rounded-2xl p-6 hover:border-primary-500 hover:shadow-md transition-all flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-10 h-10 bg-primary-600 text-white rounded-xl flex items-center justify-center font-extrabold text-lg">
+                        {step.number}
+                      </div>
+                      <Icon className="w-6 h-6 text-neutral-400" />
                     </div>
-                    <step.icon className="w-8 h-8 text-neutral-400" />
+                    <h3 className="text-lg font-bold text-neutral-900 mb-2">
+                      {step.title}
+                    </h3>
+                    <p className="text-neutral-600 text-sm leading-relaxed">{step.description}</p>
                   </div>
-                  <h3 className="text-xl font-bold text-neutral-900 mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-neutral-600">{step.description}</p>
                 </div>
-                {index < process.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2">
-                    <ArrowRight className="w-8 h-8 text-neutral-300" />
-                  </div>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* What I Do / Don't Do */}
-      <section className="py-20 bg-neutral-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-neutral-900 mb-4">
-              What I DO & DON'T do
-            </h2>
-            <p className="text-xl text-neutral-600">
-              Clear boundaries = better results
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* What I DO */}
-            <div className="bg-white border-2 border-primary-200 rounded-xl p-8">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center">
-                  <CheckCircle className="w-7 h-7 text-primary-600" />
+      {/* Deliverables Overview */}
+      <section className="py-16 bg-neutral-50 border-t border-b border-neutral-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white border-2 border-neutral-200 rounded-3xl p-8 shadow-xs">
+            <h3 className="text-xl font-extrabold text-neutral-900 mb-6 flex items-center space-x-2">
+              <ShieldCheck className="w-6 h-6 text-primary-600" />
+              <span>What You Can Expect</span>
+            </h3>
+            <div className="grid sm:grid-cols-2 gap-4">
+              {highlights.map((item, idx) => (
+                <div key={idx} className="flex items-start space-x-3 text-sm text-neutral-800 font-medium">
+                  <CheckCircle className="w-4 h-4 text-primary-600 flex-shrink-0 mt-0.5" />
+                  <span>{item}</span>
                 </div>
-                <h3 className="text-2xl font-bold text-neutral-900">
-                  What I DO
-                </h3>
-              </div>
-              <ul className="space-y-3">
-                {doList.map((item, index) => (
-                  <li key={index} className="flex items-start space-x-3">
-                    <CheckCircle className="w-5 h-5 text-primary-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-neutral-700">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* What I DON'T DO */}
-            <div className="bg-white border-2 border-red-200 rounded-xl p-8">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
-                  <XCircle className="w-7 h-7 text-red-600" />
-                </div>
-                <h3 className="text-2xl font-bold text-neutral-900">
-                  What I DON'T do
-                </h3>
-              </div>
-              <ul className="space-y-3">
-                {dontList.map((item, index) => (
-                  <li key={index} className="flex items-start space-x-3">
-                    <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-neutral-700">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          <div className="mt-12 p-6 bg-yellow-50 border-2 border-yellow-200 rounded-xl">
-            <div className="flex items-start space-x-3">
-              <AlertTriangle className="w-6 h-6 text-yellow-600 flex-shrink-0 mt-1" />
-              <div>
-                <h4 className="text-lg font-bold text-neutral-900 mb-2">
-                  Important
-                </h4>
-                <p className="text-neutral-700">
-                  If you want execution, we'll work great. If you want endless
-                  discussions and free consulting, we won't.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20 bg-white">
+      {/* Consultation Form */}
+      <section id="consultation-form" className="py-24 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-neutral-900 mb-4">
-              Best way to reach me
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 mb-4">
+              Book Your Consultation
             </h2>
-            <p className="text-xl text-neutral-600">
-              Short messages get faster replies
+            <p className="text-base text-neutral-600">
+              Provide a brief overview of your setup or product requirement. I reply within 24 hours.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <a
-              href="mailto:devzeeofficial@gmail.com"
-              className="flex items-center space-x-4 p-6 bg-neutral-50 border-2 border-neutral-200 rounded-xl hover:border-primary-600 hover:shadow-lg transition-all group"
-            >
-              <div className="w-14 h-14 bg-primary-100 rounded-xl flex items-center justify-center group-hover:bg-primary-600 transition-colors">
-                <Mail className="w-7 h-7 text-primary-600 group-hover:text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-neutral-900 mb-1">
-                  Email
+          <div className="bg-neutral-50 border-2 border-neutral-200 rounded-3xl p-8 sm:p-10 shadow-xs">
+            {submitStatus === "success" ? (
+              <div className="p-8 bg-primary-50 border border-primary-200 rounded-2xl text-center">
+                <CheckCircle className="w-12 h-12 text-primary-600 mx-auto mb-3" />
+                <h3 className="text-xl font-bold text-neutral-900 mb-2">
+                  Consultation Request Received!
                 </h3>
-                <p className="text-neutral-600">devzeeofficial@gmail.com</p>
-              </div>
-            </a>
-
-            <a
-              href="https://www.linkedin.com/in/zaheerexplores/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center space-x-4 p-6 bg-neutral-50 border-2 border-neutral-200 rounded-xl hover:border-primary-600 hover:shadow-lg transition-all group"
-            >
-              <div className="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center group-hover:bg-blue-600 transition-colors">
-                <Linkedin className="w-7 h-7 text-blue-600 group-hover:text-white" />
-              </div>
-              <div>
-                <h3 className="text-lg font-bold text-neutral-900 mb-1">
-                  LinkedIn
-                </h3>
-                <p className="text-neutral-600">
-                  linkedin.com/in/zaheerexplores
+                <p className="text-neutral-700 text-sm">
+                  Thanks! I will review your project details and get back to you within 24 hours.
                 </p>
               </div>
-            </a>
-          </div>
-
-          {/* Contact Form */}
-          <div className="bg-neutral-50 border-2 border-neutral-200 rounded-xl p-8">
-            <h3 className="text-2xl font-bold text-neutral-900 mb-6">
-              Quick Contact Form
-            </h3>
-            <form
-              name="hire-contact"
-              method="POST"
-              data-netlify="true"
-              data-netlify-honeypot="bot-field"
-              onSubmit={handleSubmit}
-              className="space-y-6"
-            >
-              <input type="hidden" name="form-name" value="hire-contact" />
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-semibold text-neutral-900 mb-2">
-                    Your Name
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    required
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-neutral-900 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none"
-                    placeholder="john@example.com"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-neutral-900 mb-2">
-                  What you're building
-                </label>
-                <textarea
-                  name="project"
-                  required
-                  value={formData.project}
-                  onChange={(e) =>
-                    setFormData({ ...formData, project: e.target.value })
-                  }
-                  rows={4}
-                  className="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none resize-none"
-                  placeholder="Describe the problem you're solving..."
-                />
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-semibold text-neutral-900 mb-2">
-                    Timeline
-                  </label>
-                  <input
-                    type="text"
-                    name="timeline"
-                    required
-                    value={formData.timeline}
-                    onChange={(e) =>
-                      setFormData({ ...formData, timeline: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none"
-                    placeholder="e.g., 1 week, ASAP"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-neutral-900 mb-2">
-                    Budget Range
-                  </label>
-                  <input
-                    type="text"
-                    name="budget"
-                    required
-                    value={formData.budget}
-                    onChange={(e) =>
-                      setFormData({ ...formData, budget: e.target.value })
-                    }
-                    className="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-600 focus:outline-none"
-                    placeholder="e.g., $2k-5k"
-                  />
-                </div>
-              </div>
-
-              {/* Success Message */}
-              {submitStatus === "success" && (
-                <div className="p-4 bg-green-50 border border-green-200 rounded-lg flex items-start space-x-3">
-                  <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <p className="text-green-800 font-medium">
-                      Message sent successfully!
-                    </p>
-                    <p className="text-green-700 text-sm">
-                      I'll get back to you within 24 hours.
-                    </p>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
+                      Your Full Name
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
+                      className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-xl focus:border-primary-600 focus:outline-none text-sm"
+                      placeholder="e.g. John Doe"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
+                      Work Email
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                      className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-xl focus:border-primary-600 focus:outline-none text-sm"
+                      placeholder="john@startup.com"
+                    />
                   </div>
                 </div>
-              )}
 
-              {/* Error Message */}
-              {submitStatus === "error" && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start space-x-3">
-                  <XCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
+                    Primary Service Category
+                  </label>
+                  <select
+                    value={formData.serviceCategory}
+                    onChange={(e) =>
+                      setFormData({ ...formData, serviceCategory: e.target.value })
+                    }
+                    className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-xl focus:border-primary-600 focus:outline-none text-sm font-medium text-neutral-800"
+                  >
+                    <option value="Global Business Setup & Payment Gateways">
+                      Global Business Setup & Payment Gateways (LLC, Stripe, PayPal, Wise)
+                    </option>
+                    <option value="MVP Development (7 Days)">
+                      MVP Development in 7 Days (React, SaaS, Supabase)
+                    </option>
+                    <option value="AI Solutions & Workflow Automations">
+                      AI Solutions & Workflow Automation (Zapier, Make, OpenAI)
+                    </option>
+                    <option value="Top 1% Vetted Talent Match">
+                      Top 1% Vetted Talent Matching
+                    </option>
+                    <option value="1-on-1 Founder Mentorship">
+                      1-on-1 Founder Mentorship & Strategy
+                    </option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
+                    Project Overview / Current Requirement
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={formData.project}
+                    onChange={(e) =>
+                      setFormData({ ...formData, project: e.target.value })
+                    }
+                    className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-xl focus:border-primary-600 focus:outline-none text-sm resize-none"
+                    placeholder="Briefly describe your business, timeline, or key requirement..."
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <p className="text-red-800 font-medium">
-                      Failed to send message
-                    </p>
-                    <p className="text-red-700 text-sm">
-                      Please try again or email me directly at
-                      devzeeofficial@gmail.com
-                    </p>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
+                      Desired Timeline
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.timeline}
+                      onChange={(e) =>
+                        setFormData({ ...formData, timeline: e.target.value })
+                      }
+                      className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-xl focus:border-primary-600 focus:outline-none text-sm"
+                      placeholder="e.g. 1 week, Immediate"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
+                      Budget Range
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.budget}
+                      onChange={(e) =>
+                        setFormData({ ...formData, budget: e.target.value })
+                      }
+                      className="w-full px-4 py-3 bg-white border border-neutral-300 rounded-xl focus:border-primary-600 focus:outline-none text-sm"
+                      placeholder="e.g. $1,000 - $3,000"
+                    />
                   </div>
                 </div>
-              )}
 
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full flex items-center justify-center space-x-2 px-8 py-4 bg-neutral-900 text-white rounded-lg hover:bg-neutral-800 transition-colors font-semibold text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full py-4 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded-xl text-base transition-colors flex items-center justify-center space-x-2 shadow-md disabled:opacity-50"
+                >
+                  <Calendar className="w-5 h-5 text-primary-400" />
+                  <span>{isSubmitting ? "Submitting..." : "Submit Consultation Request"}</span>
+                </button>
+              </form>
+            )}
+
+            <div className="mt-8 pt-6 border-t border-neutral-200 flex flex-wrap items-center justify-center gap-6 text-xs text-neutral-600">
+              <a
+                href="https://wa.me/923474552747"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-1.5 hover:text-emerald-700 transition-colors font-bold text-emerald-600"
               >
-                <span>{isSubmitting ? "Sending..." : "Send Message"}</span>
-                {!isSubmitting && <ArrowRight className="w-5 h-5" />}
-              </button>
-            </form>
+                <span>WhatsApp: +92 347 4552747</span>
+              </a>
+              <a
+                href="mailto:devzeeofficial@gmail.com"
+                className="flex items-center space-x-2 hover:text-primary-600 transition-colors font-medium"
+              >
+                <Mail className="w-4 h-4 text-primary-600" />
+                <span>devzeeofficial@gmail.com</span>
+              </a>
+              <a
+                href="https://www.linkedin.com/in/zaheerexplores/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 hover:text-primary-600 transition-colors font-medium"
+              >
+                <Linkedin className="w-4 h-4 text-blue-600" />
+                <span>linkedin.com/in/zaheerexplores</span>
+              </a>
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* Services CTA */}
-      <section className="relative py-20 bg-gradient-to-br from-cream-500 via-cream-400 to-primary-500 text-white overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-20"
-          style={{ backgroundImage: "url(/services-cover.png)" }}
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-600/80 to-cream-600/80"></div>
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold mb-4">
-            Want to see what I can build for you?
-          </h2>
-          <p className="text-xl text-white/90 mb-8">
-            Check out my services: MVPs, Automation, and Vetted Talent
-          </p>
-          <Link
-            to="/services"
-            className="inline-flex items-center space-x-2 px-8 py-4 bg-white text-primary-600 rounded-lg hover:bg-neutral-50 transition-colors font-semibold text-lg shadow-lg"
-          >
-            <span>View Services</span>
-            <ArrowRight className="w-5 h-5" />
-          </Link>
-        </div>
-      </section>
-
-      {/* Final Note */}
-      <section className="py-16 bg-white">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <p className="text-2xl font-bold text-neutral-900 mb-4">
-            I don't sell dreams. I ship systems.
-          </p>
-          <p className="text-lg text-neutral-600">
-            If that's what you need—we should talk.
-          </p>
         </div>
       </section>
     </div>

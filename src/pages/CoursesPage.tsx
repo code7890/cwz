@@ -6,18 +6,18 @@ import {
   Clock,
   Users,
   BookOpen,
-  Award,
   Code,
-  Palette,
-  Database,
-  Smartphone,
-  Brain,
   CheckCircle,
   ArrowRight,
   SlidersHorizontal,
   Grid3X3,
   List,
   Play,
+  FileText,
+  Video,
+  Download,
+  Layers,
+  Sparkles,
 } from "lucide-react";
 import { getCourses, getCategories } from "../lib/database";
 
@@ -26,8 +26,6 @@ const CoursesPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedLevel, setSelectedLevel] = useState("all");
   const [sortBy, setSortBy] = useState("popular");
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const [showFilters, setShowFilters] = useState(false);
   const [courses, setCourses] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,52 +41,98 @@ const CoursesPage: React.FC = () => {
         getCourses(),
         getCategories(),
       ]);
-      setCourses(coursesData);
+
+      // If database returns empty or mock needed, ensure fallback courses with YouTube & Notes flags exist
+      const fallbackCourses = [
+        {
+          id: "c-1",
+          title: "Full-Stack SaaS Development with React & Supabase",
+          description:
+            "Build complete production-ready SaaS applications. Includes YouTube video masterclass, interactive notes, and full source code.",
+          level: "intermediate",
+          rating: 4.9,
+          duration_hours: 12,
+          students_enrolled: 4200,
+          thumbnail_url:
+            "https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+          is_popular: true,
+          price: 0,
+          category: { name: "Web Development", slug: "web-dev" },
+          instructor: { name: "Zaheer (CodeWithZee)", avatar_url: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop" },
+          has_notes: true,
+          has_youtube: true,
+          has_roadmap: true,
+        },
+        {
+          id: "c-2",
+          title: "Stripe & PayPal Global Payment Gateways for Founders",
+          description:
+            "Comprehensive breakdown for non-US/UK founders on legal formation, Stripe setup, and business banking without gateway locks.",
+          level: "beginner",
+          rating: 5.0,
+          duration_hours: 6,
+          students_enrolled: 3100,
+          thumbnail_url:
+            "https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+          is_popular: true,
+          price: 0,
+          category: { name: "Business Infra", slug: "business-infra" },
+          instructor: { name: "Zaheer (CodeWithZee)", avatar_url: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop" },
+          has_notes: true,
+          has_youtube: true,
+          has_roadmap: true,
+        },
+        {
+          id: "c-3",
+          title: "Custom AI Agents & Workflow Automation with Python",
+          description:
+            "Build automated lead responders, customer support AI bots, and Make/Zapier pipelines.",
+          level: "intermediate",
+          rating: 4.8,
+          duration_hours: 8,
+          students_enrolled: 2800,
+          thumbnail_url:
+            "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop",
+          is_popular: false,
+          price: 0,
+          category: { name: "AI & Automation", slug: "ai-automation" },
+          instructor: { name: "Zaheer (CodeWithZee)", avatar_url: "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop" },
+          has_notes: true,
+          has_youtube: true,
+          has_roadmap: true,
+        },
+      ];
+
+      const mergedCourses = coursesData.length > 0 ? coursesData : fallbackCourses;
+
+      setCourses(mergedCourses);
       setCategories([
-        { id: "all", name: "All Courses", slug: "all", icon: "BookOpen" },
-        ...categoriesData,
+        { id: "all", name: "All Categories", slug: "all" },
+        { id: "web-dev", name: "Web Development", slug: "web-dev" },
+        { id: "business-infra", name: "Business Infra", slug: "business-infra" },
+        { id: "ai-automation", name: "AI & Automation", slug: "ai-automation" },
       ]);
       setLoading(false);
     };
     loadData();
   }, []);
 
-  const categoryIcons: Record<string, any> = {
-    BookOpen: BookOpen,
-    Code: Code,
-    Smartphone: Smartphone,
-    Database: Database,
-    Palette: Palette,
-    Brain: Brain,
-  };
-
-  const levels = [
-    { id: "all", name: "All Levels" },
-    { id: "beginner", name: "Beginner" },
-    { id: "intermediate", name: "Intermediate" },
-    { id: "advanced", name: "Advanced" },
-  ];
-
-  const sortOptions = [
-    { id: "popular", name: "Most Popular" },
-    { id: "newest", name: "Newest First" },
-    { id: "rating", name: "Highest Rated" },
-  ];
-
   const filteredCourses = useMemo(() => {
-    let filtered = courses;
+    let filtered = [...courses];
 
     if (searchQuery) {
       filtered = filtered.filter(
         (course) =>
-          course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          course.description.toLowerCase().includes(searchQuery.toLowerCase()),
+          course.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          course.description?.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
     if (selectedCategory !== "all") {
       filtered = filtered.filter(
-        (course) => course.category?.slug === selectedCategory,
+        (course) =>
+          course.category?.slug === selectedCategory ||
+          course.category_id === selectedCategory,
       );
     }
 
@@ -96,179 +140,60 @@ const CoursesPage: React.FC = () => {
       filtered = filtered.filter((course) => course.level === selectedLevel);
     }
 
-    switch (sortBy) {
-      case "popular":
-        filtered.sort((a, b) => b.students_enrolled - a.students_enrolled);
-        break;
-      case "newest":
-        filtered.sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
-        );
-        break;
-      case "rating":
-        filtered.sort((a, b) => b.rating - a.rating);
-        break;
-      default:
-        break;
-    }
-
     return filtered;
-  }, [courses, searchQuery, selectedCategory, selectedLevel, sortBy]);
-
-  const CourseCard = ({ course }: { course: any }) => {
-    const bgColors = [
-      "bg-gradient-to-br from-blue-50 to-blue-100",
-      "bg-gradient-to-br from-green-50 to-green-100",
-      "bg-gradient-to-br from-purple-50 to-purple-100",
-    ];
-    const borderColors = [
-      "border-blue-200",
-      "border-green-200",
-      "border-purple-200",
-    ];
-    const accentColors = ["text-blue-600", "text-green-600", "text-purple-600"];
-
-    const index = parseInt(course.id.substring(0, 8), 16) % 3;
-    const bgColor = bgColors[index];
-    const borderColor = borderColors[index];
-    const accentColor = accentColors[index];
-
-    return (
-      <div
-        className={`${bgColor} ${borderColor} border-2 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 group hover:-translate-y-1`}
-      >
-        <div className="relative">
-          <img
-            src={course.thumbnail_url}
-            alt={course.title}
-            className="w-full h-48 object-cover"
-          />
-          <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-            <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center">
-              <Play className="w-8 h-8 text-neutral-900 ml-1" />
-            </div>
-          </div>
-          {course.is_popular && (
-            <div className="absolute top-3 right-3 bg-primary-600 text-white text-xs font-bold px-2 py-1 rounded-full">
-              Popular
-            </div>
-          )}
-        </div>
-
-        <div className="p-6">
-          <div className="flex items-center justify-between mb-3">
-            <span
-              className={`text-xs font-medium ${accentColor} bg-white px-2 py-1 rounded-full border ${borderColor}`}
-            >
-              {course.level}
-            </span>
-            <div className="flex items-center text-sm text-neutral-600">
-              <Star className="w-4 h-4 text-yellow-400 fill-current mr-1" />
-              {course.rating}
-            </div>
-          </div>
-
-          <h3 className="text-lg font-bold text-neutral-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
-            {course.title}
-          </h3>
-
-          <p className="text-neutral-600 text-sm mb-4 line-clamp-2">
-            {course.description}
-          </p>
-
-          <div className="flex items-center mb-4">
-            <img
-              src={course.instructor?.avatar_url}
-              alt={course.instructor?.name}
-              className="w-6 h-6 rounded-full mr-2"
-            />
-            <span className="text-sm text-neutral-600">
-              {course.instructor?.name}
-            </span>
-          </div>
-
-          <div className="flex items-center justify-between text-sm text-neutral-600 mb-4">
-            <div className="flex items-center">
-              <Clock className="w-4 h-4 mr-1" />
-              {course.duration_hours}h
-            </div>
-            <div className="flex items-center">
-              <Users className="w-4 h-4 mr-1" />
-              {course.students_enrolled?.toLocaleString()}
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="text-xl font-bold text-neutral-900">
-                ₹{course.price?.toLocaleString()}
-              </div>
-              {course.original_price && (
-                <div className="text-sm text-neutral-500 line-through">
-                  ₹{course.original_price?.toLocaleString()}
-                </div>
-              )}
-            </div>
-            <Link
-              to={`/course/${course.id}`}
-              className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium flex items-center"
-            >
-              Enroll
-              <ArrowRight className="w-4 h-4 ml-1" />
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  };
+  }, [courses, searchQuery, selectedCategory, selectedLevel]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50 flex items-center justify-center">
+      <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-neutral-600">Loading courses...</p>
+          <div className="w-12 h-12 border-4 border-primary-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-neutral-600 font-medium">Loading YouTube Courses & Notes...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50 pt-8 pb-16">
+    <div className="min-h-screen bg-neutral-50 pt-20 pb-24 text-neutral-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl font-bold text-neutral-900 mb-4">
-            Explore Our <span className="text-primary-600">Courses</span>
+        {/* Page Banner */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center space-x-2 px-4 py-2 bg-red-50 border border-red-200 text-red-600 rounded-full text-xs font-bold mb-4">
+            <Video className="w-4 h-4" />
+            <span>YOUTUBE EMBEDS + INTERACTIVE NOTES & CODE</span>
+          </div>
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-neutral-900 mb-4 tracking-tight">
+            YouTube Courses & <span className="text-primary-600">Learning Resources</span>
           </h1>
-          <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
-            Discover courses designed for desi learners. Practical skills, real
-            guidance, career-focused content.
+          <p className="text-lg text-neutral-600 leading-relaxed">
+            Free high-quality video masterclasses straight from the **Code With Zee** YouTube channel, enhanced with downloadable cheat sheets, interactive notes, code runners, and roadmaps.
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-neutral-200 p-6 mb-8">
-          <div className="flex flex-col lg:flex-row gap-4">
+        {/* Filter Bar */}
+        <div className="bg-white rounded-2xl border border-neutral-200 p-4 sm:p-6 mb-10 shadow-sm">
+          <div className="flex flex-col sm:flex-row gap-4">
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-neutral-400" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
               <input
                 type="text"
-                placeholder="Search courses, instructors, topics..."
+                placeholder="Search YouTube courses, notes, or tech stack..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="w-full pl-11 pr-4 py-3 border border-neutral-200 rounded-xl text-sm focus:outline-none focus:border-primary-500"
               />
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex gap-3">
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="px-4 py-3 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="px-4 py-3 border border-neutral-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary-500 bg-white"
               >
-                {categories.map((category) => (
-                  <option key={category.id} value={category.slug}>
-                    {category.name}
+                {categories.map((c) => (
+                  <option key={c.id} value={c.slug}>
+                    {c.name}
                   </option>
                 ))}
               </select>
@@ -276,127 +201,91 @@ const CoursesPage: React.FC = () => {
               <select
                 value={selectedLevel}
                 onChange={(e) => setSelectedLevel(e.target.value)}
-                className="px-4 py-3 border border-neutral-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                className="px-4 py-3 border border-neutral-200 rounded-xl text-sm font-medium focus:outline-none focus:border-primary-500 bg-white"
               >
-                {levels.map((level) => (
-                  <option key={level.id} value={level.id}>
-                    {level.name}
-                  </option>
-                ))}
+                <option value="all">All Levels</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
               </select>
-
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="px-4 py-3 border border-neutral-200 rounded-xl hover:bg-neutral-50 transition-colors flex items-center"
-              >
-                <SlidersHorizontal className="w-5 h-5 mr-2" />
-                More Filters
-              </button>
             </div>
           </div>
+        </div>
 
-          {showFilters && (
-            <div className="mt-6 pt-6 border-t border-neutral-200">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-neutral-700 mb-2">
-                    Sort By
-                  </label>
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full px-3 py-2 border border-neutral-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                  >
-                    {sortOptions.map((option) => (
-                      <option key={option.id} value={option.id}>
-                        {option.name}
-                      </option>
-                    ))}
-                  </select>
+        {/* Courses Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredCourses.map((course) => (
+            <div
+              key={course.id}
+              className="bg-white border-2 border-neutral-200 rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+            >
+              <div>
+                <div className="relative aspect-video bg-neutral-900 overflow-hidden">
+                  <img
+                    src={course.thumbnail_url}
+                    alt={course.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-90 group-hover:opacity-100 transition-opacity">
+                    <div className="w-14 h-14 bg-red-600 text-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <Play className="w-6 h-6 fill-current ml-1" />
+                    </div>
+                  </div>
+                  <div className="absolute top-3 left-3 bg-red-600 text-white text-[11px] font-bold px-2.5 py-1 rounded-md shadow-sm flex items-center space-x-1">
+                    <Video className="w-3 h-3" />
+                    <span>Free on YouTube</span>
+                  </div>
                 </div>
 
-                <div className="flex items-end col-span-2">
-                  <button
-                    onClick={() => {
-                      setSearchQuery("");
-                      setSelectedCategory("all");
-                      setSelectedLevel("all");
-                      setSortBy("popular");
-                    }}
-                    className="px-4 py-2 text-primary-600 hover:text-primary-700 font-medium"
-                  >
-                    Clear All Filters
-                  </button>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold uppercase tracking-wider text-primary-700 bg-primary-50 px-2.5 py-1 rounded-md border border-primary-200">
+                      {course.level || "Beginner"}
+                    </span>
+                    <div className="flex items-center text-xs font-semibold text-neutral-600">
+                      <Star className="w-3.5 h-3.5 text-yellow-400 fill-current mr-1" />
+                      <span>{course.rating || 4.9}</span>
+                    </div>
+                  </div>
+
+                  <h3 className="text-lg font-bold text-neutral-900 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
+                    {course.title}
+                  </h3>
+
+                  <p className="text-neutral-600 text-xs mb-4 line-clamp-2 leading-relaxed">
+                    {course.description}
+                  </p>
+
+                  {/* Features Badges */}
+                  <div className="space-y-1.5 mb-6 pt-3 border-t border-neutral-100">
+                    <div className="flex items-center space-x-2 text-xs text-neutral-700 font-semibold">
+                      <FileText className="w-4 h-4 text-primary-600 flex-shrink-0" />
+                      <span>Interactive Notes & Key Takeaways</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-xs text-neutral-700 font-semibold">
+                      <Code className="w-4 h-4 text-sage-600 flex-shrink-0" />
+                      <span>Downloadable Source Code & Repos</span>
+                    </div>
+                    <div className="flex items-center space-x-2 text-xs text-neutral-700 font-semibold">
+                      <Layers className="w-4 h-4 text-cream-700 flex-shrink-0" />
+                      <span>Step-by-Step Learning Roadmap</span>
+                    </div>
+                  </div>
                 </div>
               </div>
+
+              <div className="p-6 pt-0">
+                <Link
+                  to={`/learn/${course.id}`}
+                  className="w-full py-3 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl font-bold text-xs flex items-center justify-center space-x-2 transition-colors shadow-sm"
+                >
+                  <span>Open Video Player & Notes</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
             </div>
-          )}
+          ))}
         </div>
-
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h2 className="text-2xl font-bold text-neutral-900">
-              {filteredCourses.length} Course
-              {filteredCourses.length !== 1 ? "s" : ""} Found
-            </h2>
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <div className="flex items-center bg-neutral-100 rounded-lg p-1">
-              <button
-                onClick={() => setViewMode("grid")}
-                className={`p-2 rounded-md transition-colors ${
-                  viewMode === "grid"
-                    ? "bg-white text-primary-600 shadow-sm"
-                    : "text-neutral-600 hover:text-neutral-900"
-                }`}
-              >
-                <Grid3X3 className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setViewMode("list")}
-                className={`p-2 rounded-md transition-colors ${
-                  viewMode === "list"
-                    ? "bg-white text-primary-600 shadow-sm"
-                    : "text-neutral-600 hover:text-neutral-900"
-                }`}
-              >
-                <List className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {filteredCourses.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredCourses.map((course) => (
-              <CourseCard key={course.id} course={course} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16">
-            <div className="w-24 h-24 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Search className="w-12 h-12 text-neutral-400" />
-            </div>
-            <h3 className="text-xl font-semibold text-neutral-900 mb-2">
-              No courses found
-            </h3>
-            <p className="text-neutral-600 mb-6">
-              Try adjusting your search criteria or browse our available
-              categories
-            </p>
-            <button
-              onClick={() => {
-                setSearchQuery("");
-                setSelectedCategory("all");
-                setSelectedLevel("all");
-              }}
-              className="px-6 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors font-medium"
-            >
-              Clear Filters
-            </button>
-          </div>
-        )}
       </div>
     </div>
   );

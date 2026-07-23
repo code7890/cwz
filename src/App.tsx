@@ -13,6 +13,7 @@ import DocsPage from "./pages/DocsPage";
 import BlogPage from "./pages/BlogPage";
 import ContactPage from "./pages/ContactPage";
 import ServicesPage from "./pages/ServicesPage";
+import BusinessSetupPage from "./pages/services/BusinessSetupPage";
 import HirePage from "./pages/HirePage";
 import LoginPage from "./pages/auth/LoginPage";
 import SignupPage from "./pages/auth/SignupPage";
@@ -141,11 +142,20 @@ function App() {
               </Layout>
             }
           />
+
           <Route
             path="/services"
             element={
               <Layout>
                 <ServicesPage />
+              </Layout>
+            }
+          />
+          <Route
+            path="/services/business-setup"
+            element={
+              <Layout>
+                <BusinessSetupPage />
               </Layout>
             }
           />

@@ -1,318 +1,367 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowRight,
   Code,
   Users,
-  Trophy,
-  BookOpen,
-  Zap,
   Target,
-  Heart,
   Star,
-  Play,
   CheckCircle,
-  TrendingUp,
-  Award,
-  Brain,
-  Rocket,
   Sparkles,
+  ShieldCheck,
+  Briefcase,
   Globe,
-  Lightbulb,
+  Clock,
+  DollarSign,
+  UserCheck,
+  Cpu,
+  Mail,
+  Linkedin,
+  Calendar,
+  Zap,
+  Check,
 } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
 
 const HomePage: React.FC = () => {
-  const { user } = useAuth();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    service: "Business Formation & Payment Infrastructure",
+    details: "",
+  });
+  const [submitted, setSubmitted] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const features = [
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+
+    try {
+      await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "e883e479-715b-432d-9eb5-8e36ae22bc30",
+          to_email: "devzeeofficial@gmail.com",
+          subject: `⚡ New Website Consultation Inquiry from ${formData.name}`,
+          from_name: "CodeWithZee Platform",
+          replyto: formData.email,
+          name: formData.name,
+          email: formData.email,
+          service: formData.service,
+          details: formData.details,
+          message: `New Consultation Inquiry:\n\nName: ${formData.name}\nEmail: ${formData.email}\nService: ${formData.service}\nDetails: ${formData.details}`,
+        }),
+      });
+    } catch (err) {
+      console.log("Notification status:", err);
+    }
+  };
+
+  const trustPillars = [
     {
-      icon: BookOpen,
-      title: "Clear Roadmaps",
-      description:
-        "Step-by-step learning paths designed for desi learners. No confusion, just clarity.",
-      bgColor: "bg-cream-100",
-      iconColor: "text-primary-600",
-      borderColor: "border-cream-200",
+      title: "Direct 1-on-1 Access",
+      desc: "Single point of contact. You communicate directly with me from start to finish.",
+      icon: UserCheck,
+      color: "bg-primary-50 text-primary-700 border-primary-200",
     },
     {
-      icon: Code,
-      title: "Interactive Learning",
+      title: "Outcome First",
+      desc: "Revenue and growth aligned. Every line of code or setup serves your business goal.",
+      icon: Target,
+      color: "bg-sage-50 text-sage-700 border-sage-200",
+    },
+    {
+      title: "Tech + Business Infra",
+      desc: "Full-stack software engineering combined with global legal and payment gateways.",
+      icon: Cpu,
+      color: "bg-cream-50 text-cream-800 border-cream-200",
+    },
+    {
+      title: "Transparent Fixed Pricing",
+      desc: "Clear upfront quotes with explicit deliverables. No hidden hourly surprises.",
+      icon: DollarSign,
+      color: "bg-peach-50 text-peach-700 border-peach-200",
+    },
+    {
+      title: "Long-Term Partnership",
+      desc: "Ongoing support and technical advice long after your product launches.",
+      icon: ShieldCheck,
+      color: "bg-lavender-50 text-lavender-700 border-lavender-200",
+    },
+  ];
+
+  const mainServices = [
+    {
+      id: "infra",
+      badge: "Legal & Payment Infra",
+      title: "Global Business Setup & Payment Gateways",
+      tagline: "International financial & legal foundation.",
       description:
-        "Built-in code editor, challenges, and projects. Learn by doing, not just reading.",
-      bgColor: "bg-sage-100",
-      iconColor: "text-sage-600",
+        "Establish a verified legal presence worldwide. I assist with corporate entity setup, address verification, and verified payment gateway integrations.",
+      features: [
+        "US LLC or UK LTD Company Incorporation",
+        "Registered Agent & Official Business Address",
+        "ITIN Application & Tax Compliance Guidance",
+        "Stripe & PayPal Business Account Verification",
+        "Wise Business, Mercury Bank & Payoneer Setup",
+      ],
+      timeline: "3–7 Days",
+      icon: Globe,
+      accent: "from-primary-500 to-primary-600",
+      bgColor: "bg-primary-50/50",
+      borderColor: "border-primary-200",
+      href: "/services/business-setup",
+    },
+    {
+      id: "mvp",
+      badge: "Software Engineering",
+      title: "MVP Development in 7 Days",
+      tagline: "Launch your product fast with clean modern tech.",
+      description:
+        "Turn your product idea into a production-grade web application built with React/Next.js, Supabase, and Stripe checkout.",
+      features: [
+        "Full-Stack Frontend & Backend Architecture",
+        "Responsive Modern Glassmorphism UI",
+        "User Auth, Database & File Storage",
+        "Stripe Billing & Subscription Setup",
+        "Deployment & Full Code Handover",
+      ],
+      timeline: "5–7 Days",
+      icon: Zap,
+      accent: "from-sage-500 to-sage-600",
+      bgColor: "bg-sage-50/50",
       borderColor: "border-sage-200",
+      href: "/services#mvp",
     },
     {
+      id: "ai-automation",
+      badge: "AI & Operations",
+      title: "AI Solutions & Workflow Automation",
+      tagline: "Automate manual tasks and lead responses.",
+      description:
+        "Deploy custom AI agents, automated email/WhatsApp sequences, and smart CRM sync pipelines to save hundreds of operational hours.",
+      features: [
+        "AI Lead Qualification & Support Agents",
+        "Automated WhatsApp & Email Follow-ups",
+        "Zapier, Make, Notion & OpenAI Pipelines",
+        "End-to-End Agency Operations Sync",
+      ],
+      timeline: "3–5 Days",
+      icon: Cpu,
+      accent: "from-cream-500 to-cream-600",
+      bgColor: "bg-cream-50/50",
+      borderColor: "border-cream-200",
+      href: "/services#automation",
+    },
+    {
+      id: "talent",
+      badge: "Team Building",
+      title: "Top 1% Vetted Talent Matching",
+      tagline: "Handpicked engineering firepower for your team.",
+      description:
+        "Access personally tested full-stack developers, AI builders, and UI engineers from my private network.",
+      features: [
+        "1-on-1 Requirement Mapping",
+        "Shortlist 1–3 Vetted Technical Builders",
+        "Direct Interview & Onboarding",
+        "Ongoing Quality Assurance",
+      ],
+      timeline: "24–48 Hours",
       icon: Users,
-      title: "Desi Community",
-      description:
-        "Connect with like-minded learners. Share progress, get help, grow together.",
-      bgColor: "bg-lavender-100",
-      iconColor: "text-lavender-600",
-      borderColor: "border-lavender-200",
-    },
-    {
-      icon: Trophy,
-      title: "Real Outcomes",
-      description:
-        "From learning to earning. We focus on skills that lead to jobs and income.",
-      bgColor: "bg-peach-100",
-      iconColor: "text-peach-600",
+      accent: "from-peach-500 to-peach-600",
+      bgColor: "bg-peach-50/50",
       borderColor: "border-peach-200",
+      href: "/services#talent",
     },
   ];
 
-  const courses = [
+  // Modern minimalist reviews without stock images
+  const modernReviews = [
     {
-      title: "Complete Web Development",
-      description:
-        "HTML, CSS, JavaScript se React tak. Full-stack developer banne ka complete roadmap.",
-      level: "Beginner to Advanced",
-      duration: "12 weeks",
-      students: "2.5K+",
-      bgColor: "bg-gradient-to-br from-blue-50 to-blue-100",
-      accentColor: "text-blue-600",
-      borderColor: "border-blue-200",
+      author: "Sharim P.",
+      title: "Founder, SaaS Platform",
+      location: "United States",
+      service: "US LLC + Stripe Setup + MVP",
+      quote:
+        "Zee set up our US company structure, verified our Stripe account, and built our MVP in 6 days. Communication was direct, clear, and focused on launching quickly.",
     },
     {
-      title: "Python for Everyone",
-      description:
-        "Programming ki duniya mein entry. Data Science aur AI ke liye foundation.",
-      level: "Beginner",
-      duration: "8 weeks",
-      students: "3.2K+",
-      bgColor: "bg-gradient-to-br from-green-50 to-green-100",
-      accentColor: "text-green-600",
-      borderColor: "border-green-200",
+      author: "Daniel M.",
+      title: "Agency Director",
+      location: "United Kingdom",
+      service: "Workflow Automation",
+      quote:
+        "Our entire lead qualification and CRM pipeline now runs automatically through AI agents. Saved us dozens of hours every single week.",
     },
     {
-      title: "Freelancing Mastery",
-      description:
-        "Coding skills ko income mein convert karne ka practical guide. Client finding se project delivery tak.",
-      level: "Intermediate",
-      duration: "6 weeks",
-      students: "1.8K+",
-      bgColor: "bg-gradient-to-br from-purple-50 to-purple-100",
-      accentColor: "text-purple-600",
-      borderColor: "border-purple-200",
-    },
-  ];
-
-  const stats = [
-    { number: "10K+", label: "Students Learning", icon: Users },
-    { number: "50+", label: "Courses Available", icon: BookOpen },
-    { number: "95%", label: "Success Rate", icon: TrendingUp },
-    { number: "24/7", label: "Community Support", icon: Heart },
-  ];
-
-  const testimonials = [
-    {
-      name: "Ahmed Khan",
-      role: "Frontend Developer",
-      content:
-        "CodeWithZee ka approach bilkul different hai. Simple Urdu mein samjhaya, practical projects diye. Ab main freelancing kar raha hun!",
-      avatar:
-        "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
-      company: "Freelancer",
-      bgColor: "bg-cream-50",
-      borderColor: "border-cream-200",
-    },
-    {
-      name: "Fatima Ali",
-      role: "Full Stack Developer",
-      content:
-        "Pehle coding se dar lagta tha. Yahan step-by-step seekha, community ka support mila. Ab tech company mein job hai!",
-      avatar:
-        "https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop",
-      company: "TechCorp",
-      bgColor: "bg-sage-50",
-      borderColor: "border-sage-200",
-    },
-    {
-      name: "Anjali Kumari",
-      role: "AI Engineer",
-      content:
-        "Best platform for desi students. Real guidance, practical skills, aur sab kuch Hinglish mein. Highly recommended!",
-      avatar:
-        "https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=150&h=15&fit=crop",
-      company: "AI Startup",
-      bgColor: "bg-lavender-50",
-      borderColor: "border-lavender-200",
+      author: "Usman R.",
+      title: "E-Commerce Director",
+      location: "UAE",
+      service: "Payment Infrastructure",
+      quote:
+        "Having one point of contact who understands technical engineering and international payment gateways solved a major bottleneck for us.",
     },
   ];
 
   return (
-    <div className="animate-fade-in overflow-x-hidden">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-neutral-50 via-cream-50 to-sage-50 pt-20 pb-16 min-h-screen flex items-center">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute top-20 left-10 w-2 h-2 bg-primary-400 rounded-full animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-3 h-3 bg-sage-400 rounded-full animate-bounce-subtle"></div>
-          <div className="absolute bottom-40 left-20 w-2 h-2 bg-peach-400 rounded-full animate-pulse"></div>
-          <div className="absolute top-60 left-1/3 w-1 h-1 bg-lavender-400 rounded-full animate-bounce-subtle"></div>
-          <div className="absolute bottom-60 right-1/3 w-2 h-2 bg-cream-400 rounded-full animate-pulse"></div>
-        </div>
+    <div className="animate-fade-in overflow-x-hidden text-neutral-900">
+      {/* HERO SECTION */}
+      <section className="relative bg-gradient-to-br from-neutral-900 via-neutral-950 to-neutral-900 text-white pt-28 pb-20 overflow-hidden border-b border-neutral-800">
+        <div className="absolute inset-0 bg-[radial-gradient(#ee720a_1px,transparent_1px)] [background-size:32px_32px] opacity-10"></div>
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary-600/15 rounded-full blur-3xl pointer-events-none"></div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-          <div className="text-center max-w-4xl mx-auto">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
-            <div className="inline-flex items-center px-4 py-2 bg-primary-50 text-primary-700 rounded-full text-sm font-medium mb-8 border border-primary-200 shadow-sm">
-              <Sparkles className="w-4 h-4 mr-2" />
-              Desi-first tech learning platform
+            <div className="inline-flex items-center space-x-2 px-4 py-2 bg-neutral-800/90 border border-neutral-700 rounded-full text-xs font-semibold text-primary-400 mb-8 shadow-inner">
+              <Sparkles className="w-4 h-4 text-primary-400" />
+              <span>FOUNDER PARTNER & TECHNICAL CONSULTANT</span>
             </div>
 
             {/* Main Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-neutral-900 mb-6 leading-loose animate-slide-in-left">
-              Learn Tech,{" "}
-              <span className="text-primary-600 relative">
-                Build Mindset
-                <div className="absolute -bottom-0 left-0 right-0 h-1 bg-primary-200 rounded-full transform scale-x-0 animate-scale-x"></div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
+              Build, Launch & Scale Your Business With{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 via-primary-500 to-peach-400">
+                Direct Technical Partnership
               </span>
-              <br />
-              Find Direction
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg sm:text-xl text-neutral-600 mb-8 leading-relaxed max-w-3xl mx-auto animate-slide-in-right">
-              <span className="font-semibold text-neutral-800 bg-cream-100 px-2 py-1 rounded-md">
-                Practical skills + Real guidance + Desi approach
-              </span>
+            <p className="text-lg sm:text-xl text-neutral-300 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+              From global business formation & payment gateways (LLC, Stripe, PayPal, Wise) to 7-Day MVPs, AI automations, and vetted talent matching.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 animate-slide-up">
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-14">
               <Link
-                to={user ? "/dashboard" : "/signup"}
-                className="bg-primary-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-700 transition-all duration-300 flex items-center justify-center group shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                to="/hire"
+                className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white rounded-xl font-bold text-base transition-all duration-300 shadow-lg hover:shadow-primary-500/25 flex items-center justify-center space-x-2 group"
               >
-                {user ? "Go to Dashboard" : "Start Learning Free"}
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <Calendar className="w-5 h-5" />
+                <span>Work With Me</span>
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                to="/roadmaps"
-                className="border-2 border-neutral-300 text-neutral-700 px-8 py-4 rounded-xl font-semibold hover:bg-neutral-50 hover:border-neutral-400 transition-all duration-300 transform hover:-translate-y-1"
+                to="/services"
+                className="w-full sm:w-auto px-8 py-4 bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-neutral-200 rounded-xl font-semibold text-base transition-all duration-300 flex items-center justify-center space-x-2"
               >
-                Explore Roadmaps
+                <span>Explore All Services</span>
               </Link>
             </div>
 
-            {/* Visual Elements Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 max-w-4xl mx-auto mb-12">
-              {/* Code Block */}
-              <div className="bg-neutral-900 text-green-400 p-4 rounded-xl shadow-lg font-mono text-xs animate-float border-2 border-neutral-800">
-                <div className="text-blue-400">function</div>
-                <div className="text-yellow-400">success() {"{"}</div>
-                <div className="text-white ml-2">return true;</div>
-                <div className="text-yellow-400">{"}"}</div>
+            {/* Quick Badges */}
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-3 max-w-4xl mx-auto border-t border-neutral-800 pt-8 text-left">
+              <div className="flex items-center space-x-2 text-xs font-semibold text-neutral-300 bg-neutral-800/40 p-2.5 rounded-lg border border-neutral-800">
+                <Check className="w-4 h-4 text-primary-400 flex-shrink-0" />
+                <span>1 Point of Contact</span>
               </div>
-
-              {/* Stats Card */}
-              <div className="bg-primary-50 border-2 border-primary-200 p-4 rounded-xl shadow-lg animate-bounce-subtle">
-                <div className="flex items-center justify-center mb-2">
-                  <Users className="w-5 h-5 text-primary-600 mr-2" />
-                  <span className="text-2xl font-bold text-primary-600">
-                    10K+
-                  </span>
-                </div>
-                <div className="text-sm text-primary-700 font-medium">
-                  Students
-                </div>
+              <div className="flex items-center space-x-2 text-xs font-semibold text-neutral-300 bg-neutral-800/40 p-2.5 rounded-lg border border-neutral-800">
+                <Check className="w-4 h-4 text-sage-400 flex-shrink-0" />
+                <span>Outcome First</span>
               </div>
-
-              {/* Achievement Card */}
-              <div className="bg-sage-50 border-2 border-sage-200 p-4 rounded-xl shadow-lg animate-pulse-soft">
-                <div className="flex items-center justify-center mb-2">
-                  <Trophy className="w-5 h-5 text-sage-600 mr-2" />
-                  <span className="text-2xl font-bold text-sage-600">95%</span>
-                </div>
-                <div className="text-sm text-sage-700 font-medium">
-                  Success Rate
-                </div>
+              <div className="flex items-center space-x-2 text-xs font-semibold text-neutral-300 bg-neutral-800/40 p-2.5 rounded-lg border border-neutral-800">
+                <Check className="w-4 h-4 text-cream-400 flex-shrink-0" />
+                <span>Tech + Business</span>
               </div>
-
-              {/* Community Card */}
-              <div className="bg-peach-50 border-2 border-peach-200 p-4 rounded-xl shadow-lg animate-float">
-                <div className="flex items-center justify-center mb-2">
-                  <Heart className="w-5 h-5 text-peach-600 mr-2" />
-                  <span className="text-xl font-bold text-peach-600">24/7</span>
-                </div>
-                <div className="text-sm text-peach-700 font-medium">
-                  Support
-                </div>
+              <div className="flex items-center space-x-2 text-xs font-semibold text-neutral-300 bg-neutral-800/40 p-2.5 rounded-lg border border-neutral-800">
+                <Check className="w-4 h-4 text-peach-400 flex-shrink-0" />
+                <span>Fixed Upfront Pricing</span>
               </div>
-            </div>
-
-            {/* Feature Icons */}
-            <div className="flex justify-center items-center space-x-8 opacity-60">
-              <div className="flex items-center space-x-2 text-neutral-600">
-                <Code className="w-5 h-5" />
-                <span className="text-sm font-medium">Interactive</span>
-              </div>
-              <div className="flex items-center space-x-2 text-neutral-600">
-                <Globe className="w-5 h-5" />
-                <span className="text-sm font-medium">Community</span>
-              </div>
-              <div className="flex items-center space-x-2 text-neutral-600">
-                <Lightbulb className="w-5 h-5" />
-                <span className="text-sm font-medium">Practical</span>
+              <div className="col-span-2 md:col-span-1 flex items-center space-x-2 text-xs font-semibold text-neutral-300 bg-neutral-800/40 p-2.5 rounded-lg border border-neutral-800 justify-center md:justify-start">
+                <Check className="w-4 h-4 text-lavender-400 flex-shrink-0" />
+                <span>Long-Term Support</span>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Floating Elements */}
-        <div className="absolute top-1/4 left-8 w-16 h-16 bg-primary-100 rounded-2xl shadow-lg animate-float hidden lg:flex items-center justify-center border-2 border-primary-200">
-          <Code className="w-8 h-8 text-primary-600" />
-        </div>
-
-        <div className="absolute bottom-1/4 right-8 w-14 h-14 bg-sage-100 rounded-xl shadow-lg animate-bounce-subtle hidden lg:flex items-center justify-center border-2 border-sage-200">
-          <Brain className="w-7 h-7 text-sage-600" />
-        </div>
-
-        <div className="absolute top-1/2 right-16 w-12 h-12 bg-peach-100 rounded-full shadow-lg animate-pulse-soft hidden lg:flex items-center justify-center border-2 border-peach-200">
-          <Rocket className="w-6 h-6 text-peach-600" />
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-white">
+      {/* CORE SERVICES SECTION */}
+      <section id="services" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
-              Why CodeWithZee is Different
-            </h2>
-            <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
-              Hum sirf code nahi sikhate. Hum tumhein career launch karne mein
-              help karte hain, step by step.
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
+            <div>
+              <div className="inline-flex items-center space-x-2 px-3 py-1 bg-primary-50 border border-primary-200 rounded-full text-xs font-bold text-primary-700 mb-3">
+                <Briefcase className="w-3.5 h-3.5" />
+                <span>CORE SERVICES</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-neutral-900 tracking-tight">
+                Everything Needed To Launch & Scale
+              </h2>
+            </div>
+            <p className="text-neutral-600 max-w-md mt-4 md:mt-0 text-sm leading-relaxed">
+              Global payment gateways, legal business setup, rapid 7-day software engineering, and AI automation.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => {
-              const Icon = feature.icon;
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {mainServices.map((srv) => {
+              const Icon = srv.icon;
               return (
                 <div
-                  key={index}
-                  className={`${feature.bgColor} ${feature.borderColor} border-2 p-6 rounded-2xl hover:shadow-lg transition-all duration-300 group hover:-translate-y-1`}
+                  key={srv.id}
+                  className={`rounded-3xl border-2 ${srv.borderColor} ${srv.bgColor} p-8 hover:shadow-xl transition-all duration-300 flex flex-col justify-between group`}
                 >
-                  <div
-                    className={`w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-sm`}
-                  >
-                    <Icon className={`w-6 h-6 ${feature.iconColor}`} />
+                  <div>
+                    <div className="flex items-center justify-between mb-6">
+                      <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 bg-white border border-neutral-200 rounded-full text-neutral-800 shadow-xs">
+                        {srv.badge}
+                      </span>
+                      <div className="flex items-center space-x-2 text-xs font-bold text-neutral-700 bg-white/80 px-3 py-1 rounded-lg border border-neutral-200">
+                        <Clock className="w-3.5 h-3.5 text-primary-600" />
+                        <span>Timeline: {srv.timeline}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start space-x-4 mb-4">
+                      <div
+                        className={`p-3.5 rounded-2xl bg-gradient-to-br ${srv.accent} text-white shadow-md group-hover:scale-105 transition-transform`}
+                      >
+                        <Icon className="w-7 h-7" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold text-neutral-900">
+                          {srv.title}
+                        </h3>
+                        <p className="text-sm font-semibold text-primary-700 mt-0.5">
+                          {srv.tagline}
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className="text-neutral-700 mb-6 text-sm leading-relaxed">
+                      {srv.description}
+                    </p>
+
+                    <div className="space-y-2.5 mb-8">
+                      {srv.features.map((feat, idx) => (
+                        <div key={idx} className="flex items-center space-x-2.5 text-sm text-neutral-800 font-medium">
+                          <CheckCircle className="w-4 h-4 text-primary-600 flex-shrink-0" />
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <h3 className="text-xl font-semibold text-neutral-900 mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-neutral-700 text-sm leading-relaxed">
-                    {feature.description}
-                  </p>
+
+                  <div className="pt-6 border-t border-neutral-200/80 flex items-center justify-between">
+                    <span className="text-xs font-bold text-neutral-500">
+                      Direct 1-on-1 Execution
+                    </span>
+                    <Link
+                      to={srv.href}
+                      className="px-5 py-2.5 bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold rounded-xl transition-colors flex items-center space-x-2 shadow-xs"
+                    >
+                      <span>View Specifications</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
                 </div>
               );
             })}
@@ -320,200 +369,43 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* Courses Section */}
-      <section className="py-20 bg-gradient-to-br from-neutral-50 to-cream-50">
+      {/* MODERN MINIMALIST REVIEWS SECTION (NO IMAGES) */}
+      <section className="py-20 bg-neutral-50 border-t border-b border-neutral-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm font-medium mb-6 border border-primary-200">
-              <BookOpen className="w-4 h-4 mr-2" />
-              Featured Courses
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
-              Start Your Learning Journey
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl font-extrabold text-neutral-900 mb-3">
+              Client Feedback & Results
             </h2>
-            <p className="text-xl text-neutral-600 max-w-2xl mx-auto">
-              Carefully crafted courses jo tumhein beginner se professional tak
-              le jaayenge
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {courses.map((course, index) => (
-              <div
-                key={index}
-                className={`${course.bgColor} ${course.borderColor} border-2 p-6 rounded-2xl hover:shadow-xl transition-all duration-300 group hover:-translate-y-2`}
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <span
-                    className={`${course.accentColor} text-sm font-semibold bg-white px-3 py-1 rounded-full`}
-                  >
-                    {course.level}
-                  </span>
-                  <div className="flex items-center text-neutral-600 text-sm">
-                    <Users className="w-4 h-4 mr-1" />
-                    {course.students}
-                  </div>
-                </div>
-
-                <h3 className="text-xl font-bold text-neutral-900 mb-3">
-                  {course.title}
-                </h3>
-
-                <p className="text-neutral-700 mb-4 leading-relaxed">
-                  {course.description}
-                </p>
-
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center text-neutral-600 text-sm">
-                    <Trophy className="w-4 h-4 mr-1" />
-                    {course.duration}
-                  </div>
-                  <div className="flex items-center text-green-600 text-sm font-medium">
-                    <CheckCircle className="w-4 h-4 mr-1" />
-                    Certificate
-                  </div>
-                </div>
-
-                <Link
-                  to="/courses"
-                  className={`w-full ${course.accentColor} bg-white border-2 ${course.borderColor} px-4 py-3 rounded-xl font-semibold hover:bg-neutral-50 transition-all duration-300 flex items-center justify-center group-hover:shadow-md`}
-                >
-                  Start Learning
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Link
-              to="/courses"
-              className="inline-flex items-center px-8 py-4 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-            >
-              View All Courses
-              <ArrowRight className="w-5 h-5 ml-2" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Philosophy Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-flex items-center px-3 py-1 bg-primary-50 text-primary-700 rounded-full text-sm font-medium mb-6 border border-primary-200">
-                <Heart className="w-4 h-4 mr-2" />
-                Our Philosophy
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-6">
-                Digital Bootcamp with a{" "}
-                <span className="text-primary-600">Desi Soul</span>
-              </h2>
-              <div className="space-y-4 text-neutral-600">
-                <p className="text-lg">
-                  Hum believe karte hain ke learning sirf theory nahi honi
-                  chahiye.
-                  <strong className="text-neutral-800">
-                    {" "}
-                    Action {">"} Theory
-                  </strong>{" "}
-                  - yahi hamara vision hai.
-                </p>
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3 p-4 bg-cream-50 rounded-xl border border-cream-200">
-                    <Target className="w-5 h-5 text-primary-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <strong className="text-neutral-900">Practical:</strong>
-                      <span className="text-neutral-700 ml-1">
-                        Hands-on skills jo real world mein kaam aayein
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3 p-4 bg-sage-50 rounded-xl border border-sage-200">
-                    <Users className="w-5 h-5 text-sage-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <strong className="text-neutral-900">Relatable:</strong>
-                      <span className="text-neutral-700 ml-1">
-                        Desi context mein, no-jargon approach
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3 p-4 bg-peach-50 rounded-xl border border-peach-200">
-                    <Trophy className="w-5 h-5 text-peach-600 mt-1 flex-shrink-0" />
-                    <div>
-                      <strong className="text-neutral-900">Purposeful:</strong>
-                      <span className="text-neutral-700 ml-1">
-                        Har skill income ya clarity ki taraf le jaaye
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="relative bg-gradient-to-br from-primary-100 to-cream-100 rounded-2xl p-8 shadow-xl">
-                <img
-                  src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=600&h=400&fit=crop"
-                  alt="Students learning together"
-                  className="rounded-xl shadow-lg w-full"
-                />
-                <div className="absolute -bottom-6 -right-6 bg-primary-600 text-white p-6 rounded-xl shadow-lg border-4 border-white">
-                  <div className="text-3xl font-bold">100%</div>
-                  <div className="text-sm font-medium">Real Guidance</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials Section */}
-      <section className="py-20 bg-gradient-to-br from-neutral-50 to-cream-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-neutral-900 mb-4">
-              Success Stories
-            </h2>
-            <p className="text-xl text-neutral-600">
-              Dekho kaise hamari community grow kar rahi hai
+            <p className="text-neutral-600 text-sm">
+              Direct feedback from founders and technical leaders.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
+            {modernReviews.map((rev, idx) => (
               <div
-                key={index}
-                className={`${testimonial.bgColor} ${testimonial.borderColor} border-2 p-6 rounded-2xl hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}
+                key={idx}
+                className="bg-white border-2 border-neutral-200 p-8 rounded-3xl shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
               >
-                <div className="flex items-center mb-4">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-4 h-4 text-yellow-400 fill-current"
-                    />
-                  ))}
-                </div>
-                <p className="text-neutral-700 mb-6 italic leading-relaxed">
-                  "{testimonial.content}"
-                </p>
-                <div className="flex items-center">
-                  <img
-                    src={testimonial.avatar}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full mr-4 border-2 border-white shadow-sm"
-                  />
-                  <div>
-                    <div className="font-semibold text-neutral-900">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-sm text-neutral-600">
-                      {testimonial.role}
-                    </div>
-                    <div className="text-xs text-neutral-500">
-                      {testimonial.company}
-                    </div>
+                <div>
+                  <div className="flex items-center space-x-1 text-yellow-400 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-current" />
+                    ))}
                   </div>
+                  <p className="text-neutral-800 text-sm leading-relaxed mb-6 font-normal">
+                    "{rev.quote}"
+                  </p>
+                </div>
+
+                <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
+                  <div>
+                    <div className="font-extrabold text-sm text-neutral-900">{rev.author}</div>
+                    <div className="text-xs text-neutral-500 font-medium">{rev.title} • {rev.location}</div>
+                  </div>
+                  <span className="text-[11px] font-bold text-primary-700 bg-primary-50 px-2.5 py-1 rounded-md border border-primary-200">
+                    {rev.service}
+                  </span>
                 </div>
               </div>
             ))}
@@ -521,34 +413,164 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-primary-600 to-primary-700">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="mb-8">
-            <Award className="w-16 h-16 text-primary-200 mx-auto mb-4" />
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Ready to Start Your Tech Journey?
-            </h2>
-            <p className="text-xl text-primary-100 mb-8">
-              Join thousands of students who are already building their future
-              with CodeWithZee
+      {/* COMING SOON CONTENT TEASER */}
+      <section className="py-16 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="p-8 bg-neutral-900 text-white rounded-3xl border border-neutral-800 text-center relative overflow-hidden">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 bg-primary-950 border border-primary-800 text-primary-400 rounded-full text-xs font-bold mb-4">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>CONTENT ECOSYSTEM</span>
+            </div>
+            <h3 className="text-2xl font-bold mb-2">Free Technical Courses & Roadmaps</h3>
+            <p className="text-neutral-400 text-sm max-w-xl mx-auto mb-6">
+              Interactive video courses, technical roadmaps, and AI tool directories are currently being updated and will be available soon.
             </p>
+            <span className="inline-block px-4 py-2 bg-neutral-800 border border-neutral-700 text-neutral-300 text-xs font-bold rounded-xl">
+              Coming Soon
+            </span>
           </div>
+        </div>
+      </section>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              to="/signup"
-              className="bg-white text-primary-600 px-8 py-4 rounded-xl font-semibold hover:bg-neutral-50 transition-all duration-300 flex items-center justify-center group shadow-lg hover:shadow-xl"
-            >
-              Start Free Today
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              to="/courses"
-              className="border-2 border-primary-400 text-white px-8 py-4 rounded-xl font-semibold hover:bg-primary-700 transition-all duration-300"
-            >
-              Browse Courses
-            </Link>
+      {/* DIRECT CONSULTATION FORM */}
+      <section className="py-24 bg-neutral-50 border-t border-neutral-200">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white border-2 border-neutral-200 text-neutral-900 rounded-3xl p-8 sm:p-12 shadow-sm relative overflow-hidden">
+            <div className="text-center max-w-2xl mx-auto mb-10">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary-700 bg-primary-50 px-3 py-1 rounded-full border border-primary-200">
+                DIRECT INQUIRY
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold mt-4 mb-3">
+                Book a Direct Consultation
+              </h2>
+              <p className="text-neutral-600 text-sm">
+                Fill this short form to discuss your setup, timeline, and requirements. I reply within 24 hours.
+              </p>
+            </div>
+
+            {submitted ? (
+              <div className="bg-primary-50 border border-primary-200 p-8 rounded-2xl text-center">
+                <CheckCircle className="w-12 h-12 text-primary-600 mx-auto mb-3" />
+                <h3 className="text-xl font-bold text-neutral-900 mb-2">
+                  Inquiry Submitted!
+                </h3>
+                <p className="text-neutral-700 text-sm">
+                  Thank you! I'll review your details and reply shortly.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleFormSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
+                      placeholder="e.g. Alex Rivera"
+                      className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-primary-600 text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
+                      placeholder="alex@startup.com"
+                      className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-primary-600 text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
+                    Service Required
+                  </label>
+                  <select
+                    value={formData.service}
+                    onChange={(e) =>
+                      setFormData({ ...formData, service: e.target.value })
+                    }
+                    className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 focus:outline-none focus:border-primary-600 text-sm font-medium"
+                  >
+                    <option value="Business Formation & Payment Infrastructure">
+                      Global Business Setup & Payment Gateways (LLC, Stripe, PayPal, Wise)
+                    </option>
+                    <option value="MVP Development (7 Days)">
+                      MVP Development in 7 Days (React, SaaS, Supabase)
+                    </option>
+                    <option value="AI & Automation">
+                      AI Solutions & Workflow Automation
+                    </option>
+                    <option value="Vetted Talent Provider">
+                      Top 1% Vetted Talent Matching
+                    </option>
+                    <option value="Mentorship & Strategy">
+                      1-on-1 Founder Strategy Consultation
+                    </option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
+                    Project Details
+                  </label>
+                  <textarea
+                    rows={4}
+                    required
+                    value={formData.details}
+                    onChange={(e) =>
+                      setFormData({ ...formData, details: e.target.value })
+                    }
+                    placeholder="Briefly describe your business, timeline, or key requirement..."
+                    className="w-full px-4 py-3 bg-neutral-50 border border-neutral-300 rounded-xl text-neutral-900 placeholder-neutral-400 focus:outline-none focus:border-primary-600 text-sm resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-4 bg-neutral-900 hover:bg-neutral-800 text-white font-bold rounded-xl text-base transition-all shadow-md flex items-center justify-center space-x-2"
+                >
+                  <Calendar className="w-5 h-5 text-primary-400" />
+                  <span>Submit Inquiry</span>
+                </button>
+              </form>
+            )}
+
+            <div className="mt-8 pt-6 border-t border-neutral-200 flex flex-wrap items-center justify-center gap-6 text-xs text-neutral-600">
+              <a
+                href="https://wa.me/923474552747"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-1.5 hover:text-emerald-700 transition-colors font-bold text-emerald-600"
+              >
+                <span>WhatsApp: +92 347 4552747</span>
+              </a>
+              <span className="flex items-center space-x-1.5">
+                <Mail className="w-4 h-4 text-primary-600" />
+                <span>devzeeofficial@gmail.com</span>
+              </span>
+              <a
+                href="https://www.linkedin.com/in/zaheerexplores/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center space-x-1.5 hover:text-neutral-900 transition-colors"
+              >
+                <Linkedin className="w-4 h-4 text-blue-600" />
+                <span>linkedin.com/in/zaheerexplores</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>

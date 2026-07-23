@@ -1,43 +1,42 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Code, Twitter, Github, Linkedin, Mail } from "lucide-react";
+import { Code, Linkedin, Mail } from "lucide-react";
 
 const Footer: React.FC = () => {
   const footerSections = [
     {
-      title: "Learn",
+      title: "Services",
       links: [
-        { name: "Roadmaps", href: "/roadmaps" },
-        { name: "Courses", href: "/courses" },
-        { name: "Challenges", href: "/challenges" },
-        { name: "Documentation", href: "/docs" },
+        { name: "All Services", href: "/services" },
+        { name: "Business Setup & Gateways", href: "/services#infra" },
+        { name: "7-Day MVP Dev", href: "/services#mvp" },
+        { name: "AI Automations", href: "/services#automation" },
+        { name: "Vetted Talent Matching", href: "/services#talent" },
       ],
     },
     {
-      title: "Community",
+      title: "Work With Me",
       links: [
-        { name: "Discord", href: "#" },
-        { name: "Student Wall", href: "/community" },
-        { name: "Blog", href: "/blog" },
-        { name: "Success Stories", href: "#" },
+        { name: "Book a Consultation", href: "/hire" },
+        { name: "1-on-1 Mentorship", href: "/services#advisory" },
+        { name: "Direct Contact Form", href: "/hire#consultation-form" },
       ],
     },
     {
-      title: "Support",
+      title: "Content Ecosystem",
       links: [
-        { name: "Help Center", href: "#" },
-        { name: "Contact Us", href: "/contact" },
-        { name: "Pricing", href: "/pricing" },
-        { name: "FAQ", href: "#" },
+        { name: "Courses (Coming Soon)", href: "/services" },
+        { name: "Tech Roadmaps (Coming Soon)", href: "/services" },
+        { name: "AI Tools (Coming Soon)", href: "/services" },
+        { name: "Medium Articles", href: "https://medium.com/@zaheerexplores" },
       ],
     },
     {
-      title: "Company",
+      title: "Contact",
       links: [
-        { name: "About Us", href: "/about" },
-        { name: "Careers", href: "#" },
-        { name: "Privacy Policy", href: "#" },
-        { name: "Terms of Service", href: "#" },
+        { name: "WhatsApp: +92 347 4552747", href: "https://wa.me/923474552747" },
+        { name: "Email: devzeeofficial@gmail.com", href: "mailto:devzeeofficial@gmail.com" },
+        { name: "LinkedIn: zaheerexplores", href: "https://www.linkedin.com/in/zaheerexplores/" },
       ],
     },
   ];
@@ -49,36 +48,25 @@ const Footer: React.FC = () => {
           {/* Brand Section */}
           <div className="lg:col-span-2">
             <Link to="/" className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-lg flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
                 <Code className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-white">CodeWithZee</span>
+              <span className="text-xl font-extrabold text-white tracking-tight">CodeWithZee</span>
             </Link>
-            <p className="text-neutral-400 mb-6 max-w-sm leading-relaxed">
-              A desi-first platform to learn tech, build mindset, and find
-              direction. Practical guidance for real youth.
+            <p className="text-neutral-400 mb-6 max-w-sm leading-relaxed text-xs">
+              Direct technical and business partnership for founders. Global business formation (LLC, LTD, Stripe, PayPal, Wise) + 7-Day MVPs, AI Solutions, and Vetted Talent.
             </p>
             <div className="flex space-x-4">
               <a
-                href="#"
-                className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800"
-              >
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
-                className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800"
-              >
-                <Github className="w-5 h-5" />
-              </a>
-              <a
-                href="#"
+                href="https://www.linkedin.com/in/zaheerexplores/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800"
               >
                 <Linkedin className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="mailto:devzeeofficial@gmail.com"
                 className="text-neutral-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-neutral-800"
               >
                 <Mail className="w-5 h-5" />
@@ -89,16 +77,27 @@ const Footer: React.FC = () => {
           {/* Footer Links */}
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h3 className="text-white font-semibold mb-4">{section.title}</h3>
+              <h3 className="text-white font-semibold mb-4 text-xs uppercase tracking-wider">{section.title}</h3>
               <ul className="space-y-2">
                 {section.links.map((link) => (
                   <li key={link.name}>
-                    <Link
-                      to={link.href}
-                      className="text-neutral-400 hover:text-white transition-colors text-sm hover:underline"
-                    >
-                      {link.name}
-                    </Link>
+                    {link.href.startsWith("http") || link.href.startsWith("mailto:") ? (
+                      <a
+                        href={link.href}
+                        target={link.href.startsWith("http") ? "_blank" : undefined}
+                        rel="noopener noreferrer"
+                        className="text-neutral-400 hover:text-white transition-colors text-xs hover:underline"
+                      >
+                        {link.name}
+                      </a>
+                    ) : (
+                      <Link
+                        to={link.href}
+                        className="text-neutral-400 hover:text-white transition-colors text-xs hover:underline"
+                      >
+                        {link.name}
+                      </Link>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -107,11 +106,11 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-neutral-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-neutral-400 text-sm">
-            © 2026 CodeWithZee. All rights reserved.
+          <p className="text-neutral-400 text-xs">
+            © {new Date().getFullYear()} CodeWithZee. All rights reserved.
           </p>
-          <p className="text-neutral-400 text-sm mt-2 md:mt-0">
-            Made with ❤️ for the desi tech community
+          <p className="text-neutral-400 text-xs mt-2 md:mt-0">
+            Outcome First • Direct Technical & Business Partnership
           </p>
         </div>
       </div>
