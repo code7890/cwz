@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Newsletter from "../components/Newsletter";
 import {
   ArrowRight,
   Code,
@@ -431,6 +432,9 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+
+      {/* FOUNDER NEWSLETTER SECTION */}
+      <Newsletter variant="card" />
 
       {/* DIRECT CONSULTATION FORM */}
       <section className="py-24 bg-neutral-50 border-t border-neutral-200">

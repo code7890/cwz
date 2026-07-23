@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Code, Linkedin, Mail } from "lucide-react";
+import Newsletter from "./Newsletter";
 
 const Footer: React.FC = () => {
   const footerSections = [
@@ -56,6 +57,9 @@ const Footer: React.FC = () => {
             <p className="text-neutral-400 mb-6 max-w-sm leading-relaxed text-xs">
               Direct technical and business partnership for founders. Global business formation (LLC, LTD, Stripe, PayPal, Wise) + 7-Day MVPs, AI Solutions, and Vetted Talent.
             </p>
+            <div className="mb-6 max-w-sm">
+              <Newsletter variant="compact" />
+            </div>
             <div className="flex space-x-4">
               <a
                 href="https://www.linkedin.com/in/zaheerexplores/"
