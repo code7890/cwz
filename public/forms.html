@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Netlify Forms Detection</title>
+</head>
+<body>
+  <!-- Netlify Static Form Definitions for SPA Form Detection -->
+
+  <!-- 1. Consultation Form -->
+  <form name="consultation" data-netlify="true" data-netlify-honeypot="bot-field" action="/" method="POST">
+    <input type="hidden" name="form-name" value="consultation" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="text" name="service" />
+    <textarea name="details"></textarea>
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- 2. Hire Consultation Form -->
+  <form name="hire-consultation" data-netlify="true" data-netlify-honeypot="bot-field" action="/" method="POST">
+    <input type="hidden" name="form-name" value="hire-consultation" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="text" name="serviceCategory" />
+    <textarea name="project"></textarea>
+    <input type="text" name="timeline" />
+    <input type="text" name="budget" />
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- 3. Business Setup Intake Form -->
+  <form name="business-setup" data-netlify="true" data-netlify-honeypot="bot-field" action="/" method="POST">
+    <input type="hidden" name="form-name" value="business-setup" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="tel" name="phone" />
+    <input type="text" name="package" />
+    <textarea name="notes"></textarea>
+    <button type="submit">Submit</button>
+  </form>
+
+  <!-- 4. Newsletter Subscription Form -->
+  <form name="newsletter" data-netlify="true" data-netlify-honeypot="bot-field" action="/" method="POST">
+    <input type="hidden" name="form-name" value="newsletter" />
+    <input type="email" name="email" />
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

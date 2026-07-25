@@ -24,7 +24,7 @@
   </head>
   <body>
     <!-- Hidden Netlify Forms detection for React SPA -->
-    <form name="consultation" netlify netlify-honeypot="bot-field" hidden>
+    <form name="consultation" data-netlify="true" data-netlify-honeypot="bot-field" action="/" method="POST" hidden>
       <input type="hidden" name="form-name" value="consultation" />
       <input type="text" name="name" />
       <input type="email" name="email" />
@@ -32,7 +32,7 @@
       <textarea name="details"></textarea>
     </form>
 
-    <form name="hire-consultation" netlify netlify-honeypot="bot-field" hidden>
+    <form name="hire-consultation" data-netlify="true" data-netlify-honeypot="bot-field" action="/" method="POST" hidden>
       <input type="hidden" name="form-name" value="hire-consultation" />
       <input type="text" name="name" />
       <input type="email" name="email" />
@@ -42,7 +42,7 @@
       <input type="text" name="budget" />
     </form>
 
-    <form name="business-setup" netlify netlify-honeypot="bot-field" hidden>
+    <form name="business-setup" data-netlify="true" data-netlify-honeypot="bot-field" action="/" method="POST" hidden>
       <input type="hidden" name="form-name" value="business-setup" />
       <input type="text" name="name" />
       <input type="email" name="email" />
@@ -51,7 +51,7 @@
       <textarea name="notes"></textarea>
     </form>
 
-    <form name="newsletter" netlify netlify-honeypot="bot-field" hidden>
+    <form name="newsletter" data-netlify="true" data-netlify-honeypot="bot-field" action="/" method="POST" hidden>
       <input type="hidden" name="form-name" value="newsletter" />
       <input type="email" name="email" />
     </form>
