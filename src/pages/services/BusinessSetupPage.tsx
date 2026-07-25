@@ -45,7 +45,23 @@ const BusinessSetupPage: React.FC = () => {
     setSubmitted(true);
 
     try {
-      // Send real-time email notification to devzeeofficial@gmail.com via Web3Forms API
+      // 1. Submit to Netlify Forms
+      const netlifyBody = new URLSearchParams({
+        "form-name": "business-setup",
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        package: formData.package,
+        notes: formData.notes,
+      }).toString();
+
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: netlifyBody,
+      });
+
+      // 2. Email notification backup via Web3Forms API to devzeeofficial@gmail.com
       await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
@@ -175,7 +191,7 @@ const BusinessSetupPage: React.FC = () => {
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </a>
               <a
-                href="https://wa.me/923474552747" // example direct whatsapp trigger
+                href="https://wa.me/923018950491"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-base transition-all duration-300 shadow-lg flex items-center justify-center space-x-2"
@@ -218,7 +234,7 @@ const BusinessSetupPage: React.FC = () => {
             </span>
           </div>
           <a
-            href="https://wa.me/923474552747"
+            href="https://wa.me/923018950491"
             target="_blank"
             rel="noopener noreferrer"
             className="px-6 py-2.5 bg-neutral-900 hover:bg-neutral-800 text-white rounded-xl font-bold text-xs transition-colors flex items-center space-x-2 shadow-sm flex-shrink-0"
@@ -447,7 +463,7 @@ const BusinessSetupPage: React.FC = () => {
                   Thank you! I will review your details and reach out to you directly on WhatsApp or Email within 24 hours.
                 </p>
                 <a
-                  href="https://wa.me/923474552747"
+                  href="https://wa.me/923018950491"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center space-x-2 px-6 py-3 bg-emerald-600 text-white font-bold text-xs rounded-xl hover:bg-emerald-700 transition-colors"
@@ -457,7 +473,14 @@ const BusinessSetupPage: React.FC = () => {
                 </a>
               </div>
             ) : (
-              <form onSubmit={handleFormSubmit} className="space-y-6">
+              <form
+                name="business-setup"
+                data-netlify="true"
+                data-netlify-honeypot="bot-field"
+                onSubmit={handleFormSubmit}
+                className="space-y-6"
+              >
+                <input type="hidden" name="form-name" value="business-setup" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
@@ -465,6 +488,7 @@ const BusinessSetupPage: React.FC = () => {
                     </label>
                     <input
                       type="text"
+                      name="name"
                       required
                       value={formData.name}
                       onChange={(e) =>
@@ -480,6 +504,7 @@ const BusinessSetupPage: React.FC = () => {
                     </label>
                     <input
                       type="email"
+                      name="email"
                       required
                       value={formData.email}
                       onChange={(e) =>
@@ -498,6 +523,7 @@ const BusinessSetupPage: React.FC = () => {
                     </label>
                     <input
                       type="tel"
+                      name="phone"
                       required
                       value={formData.phone}
                       onChange={(e) =>
@@ -512,6 +538,7 @@ const BusinessSetupPage: React.FC = () => {
                       Package Selected
                     </label>
                     <select
+                      name="package"
                       value={formData.package}
                       onChange={(e) =>
                         setFormData({ ...formData, package: e.target.value })
@@ -536,6 +563,7 @@ const BusinessSetupPage: React.FC = () => {
                     Preferred Business Name or Notes
                   </label>
                   <textarea
+                    name="notes"
                     rows={3}
                     value={formData.notes}
                     onChange={(e) =>
@@ -555,7 +583,7 @@ const BusinessSetupPage: React.FC = () => {
                     <ArrowRight className="w-5 h-5" />
                   </button>
                   <a
-                    href="https://wa.me/923474552747"
+                    href="https://wa.me/923018950491"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="py-4 px-6 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-base transition-colors flex items-center justify-center space-x-2 shadow-md"
@@ -628,7 +656,7 @@ const BusinessSetupPage: React.FC = () => {
           <div className="mt-16 text-center">
             <h3 className="text-xl font-bold text-neutral-900 mb-4">Still have a question before getting started?</h3>
             <a
-              href="https://wa.me/923474552747"
+              href="https://wa.me/923018950491"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center space-x-2 px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold text-base shadow-lg transition-colors"

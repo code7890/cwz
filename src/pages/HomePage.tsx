@@ -41,6 +41,22 @@ const HomePage: React.FC = () => {
     setSubmitted(true);
 
     try {
+      // 1. Submit to Netlify Forms
+      const netlifyBody = new URLSearchParams({
+        "form-name": "consultation",
+        name: formData.name,
+        email: formData.email,
+        service: formData.service,
+        details: formData.details,
+      }).toString();
+
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: netlifyBody,
+      });
+
+      // 2. Email notification backup via Web3Forms API to devzeeofficial@gmail.com
       await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
@@ -463,7 +479,14 @@ const HomePage: React.FC = () => {
                 </p>
               </div>
             ) : (
-              <form onSubmit={handleFormSubmit} className="space-y-6">
+              <form
+                name="consultation"
+                data-netlify="true"
+                data-netlify-honeypot="bot-field"
+                onSubmit={handleFormSubmit}
+                className="space-y-6"
+              >
+                <input type="hidden" name="form-name" value="consultation" />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-neutral-800 mb-2">
@@ -471,6 +494,7 @@ const HomePage: React.FC = () => {
                     </label>
                     <input
                       type="text"
+                      name="name"
                       required
                       value={formData.name}
                       onChange={(e) =>
@@ -486,6 +510,7 @@ const HomePage: React.FC = () => {
                     </label>
                     <input
                       type="email"
+                      name="email"
                       required
                       value={formData.email}
                       onChange={(e) =>
@@ -502,6 +527,7 @@ const HomePage: React.FC = () => {
                     Service Required
                   </label>
                   <select
+                    name="service"
                     value={formData.service}
                     onChange={(e) =>
                       setFormData({ ...formData, service: e.target.value })
@@ -531,6 +557,7 @@ const HomePage: React.FC = () => {
                     Project Details
                   </label>
                   <textarea
+                    name="details"
                     rows={4}
                     required
                     value={formData.details}
@@ -554,12 +581,12 @@ const HomePage: React.FC = () => {
 
             <div className="mt-8 pt-6 border-t border-neutral-200 flex flex-wrap items-center justify-center gap-6 text-xs text-neutral-600">
               <a
-                href="https://wa.me/923474552747"
+                href="https://wa.me/923018950491"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center space-x-1.5 hover:text-emerald-700 transition-colors font-bold text-emerald-600"
               >
-                <span>WhatsApp: +92 347 4552747</span>
+                <span>WhatsApp: +92 301 8950491</span>
               </a>
               <span className="flex items-center space-x-1.5">
                 <Mail className="w-4 h-4 text-primary-600" />

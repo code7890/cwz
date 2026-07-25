@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
     {
       title: "Contact",
       links: [
-        { name: "WhatsApp: +92 347 4552747", href: "https://wa.me/923474552747" },
+        { name: "WhatsApp: +92 301 8950491", href: "https://wa.me/923018950491" },
         { name: "Email: devzeeofficial@gmail.com", href: "mailto:devzeeofficial@gmail.com" },
         { name: "LinkedIn: zaheerexplores", href: "https://www.linkedin.com/in/zaheerexplores/" },
       ],

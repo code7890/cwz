@@ -16,7 +16,19 @@ const Newsletter: React.FC<NewsletterProps> = ({ variant = "card" }) => {
     setIsSubmitting(true);
 
     try {
-      // Send subscriber notification to devzeeofficial@gmail.com
+      // 1. Submit to Netlify Forms
+      const netlifyBody = new URLSearchParams({
+        "form-name": "newsletter",
+        email: email,
+      }).toString();
+
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: netlifyBody,
+      });
+
+      // 2. Send subscriber notification to devzeeofficial@gmail.com
       await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         headers: {
@@ -58,10 +70,18 @@ const Newsletter: React.FC<NewsletterProps> = ({ variant = "card" }) => {
             <span>Subscribed! Check your inbox soon.</span>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-2">
+          <form
+            name="newsletter"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            onSubmit={handleSubmit}
+            className="space-y-2"
+          >
+            <input type="hidden" name="form-name" value="newsletter" />
             <div className="relative">
               <input
                 type="email"
+                name="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -112,11 +132,19 @@ const Newsletter: React.FC<NewsletterProps> = ({ variant = "card" }) => {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <form
+                name="newsletter"
+                data-netlify="true"
+                data-netlify-honeypot="bot-field"
+                onSubmit={handleSubmit}
+                className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+              >
+                <input type="hidden" name="form-name" value="newsletter" />
                 <div className="relative flex-1">
                   <Mail className="w-5 h-5 text-neutral-500 absolute left-4 top-1/2 -translate-y-1/2" />
                   <input
                     type="email"
+                    name="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
